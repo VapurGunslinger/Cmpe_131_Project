@@ -1,12 +1,10 @@
-from flask import Blueprint, render_template, abort
+from flask import Blueprint
 
-home = Blueprint('home', __name__, tmeplate_folder='templates')
+views = Blueprint(__name__, "views")
 
-
-@home.route("/")
+@views.route("/")
 def home():
     return "home page"
-
 
 def test():
     return 0
