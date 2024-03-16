@@ -1,6 +1,6 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for , request
 from flask_sqlalchemy import SQLAlchemy
-from datatime import datatime
+#from datatime import datatime
 
 from views import views
 
@@ -17,11 +17,17 @@ class Appointment(db.modle):
     def __repr__(self):
         return '<Appointment %r>' % self.name #%self.appointment_date
 
+#employ side claander fill here.
+
 app.register_blueprint(views, url_prefix=("/"))
 
 @app.route('/', methods= ['POST','GET'])
 def index():
-    return render_template('home.html')
+    if request.method =='POST':
+        pass
+        #return some page
+    else:
+        return render_template('home.html')
 
 
 if __name__ == '__main__':
