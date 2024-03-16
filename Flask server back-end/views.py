@@ -5,3 +5,7 @@ views = Blueprint(__name__, "views")
 @views.route("/")
 def home():
     return "home page"
+
+def test():
+    return 0
+
