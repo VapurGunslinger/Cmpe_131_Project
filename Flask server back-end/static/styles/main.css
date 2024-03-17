@@ -1,9 +1,10 @@
 h1{
     text-align: center;
+    color: black;
 }
 
 .navbar{
-    background: brown;
+    background: #5A5151;
     font-family: 'Times New Roman', Times, serif;
     padding-left: 15px;
     padding-right: 15px;
@@ -15,8 +16,8 @@ h1{
     justify-content: space-between;
 }
 
-.navbar a:hover{
-    background-color: hsl(0, 0%, 10%);
+a:hover{
+    background-color: #CBC7DE(0, 0%, 10%);
 }
 
 .logo a{

@@ -7,21 +7,23 @@
     <title> Animal Shelter Website </title>
 </head>
 <body>
-    <h1>Hello</h1>
-
     <nav class ="navbar">
         <div class="navdiv">
-            <div class="logo"><a href="#">Adoption center</a> </div>
+          
+            <div class="logo"><a href="#">Adoption center</a> </div> 
                 <ul>
-                    <li><a href = "home.html"> &nbsp&nbsp Home &nbsp&nbsp</a></li>
-                    <li><a href = "Adoption_steps.html">  Appointment &nbsp&nbsp </a></li>
-                    <li><a href = "Animals.html">  Potential&Pets &nbsp&nbsp </a></li>
-                    <li><a href = "Testimonials.html">  Service &nbsp&nbsp</a></li>
+                    <li><a href = "{{url_for('home')}}"> &nbsp&nbsp Home &nbsp&nbsp</a></li>
+                    <li><a href = "{{url_for('adoption_steps')}}">  Appointment &nbsp&nbsp </a></li>
+                    <li><a href = "{{url_for('animals')}}">  Potential&Pets &nbsp&nbsp </a></li>
+                    <li><a href = "{{url_for('testimonial')}}">  Service &nbsp&nbsp</a></li>
                     
                 </ul>   
             
          </div>
     </nav>
+
+
+
 
 
 </body>

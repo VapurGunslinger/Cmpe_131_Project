@@ -24,16 +24,17 @@ app.config['SQLACHEMY_DATABASE_URI']= 'sqlite:///test.db'
 def home():
     return render_template('home.html')
 
-
 @app.route('/Adoption_steps')
 def adoption_steps():
-    return render_template('adotion_steps.html')
+    return render_template('Adoption_steps.html')
 
 @app.route('/Animals')
 def animals():
     return render_template('Animals.html')
 
-
+@app.route('/Testimonial')
+def testimonial():
+    return render_template('Testimonials.html')
 
 
 if __name__ == '__main__':
