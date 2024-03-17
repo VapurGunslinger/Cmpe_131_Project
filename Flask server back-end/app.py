@@ -36,6 +36,5 @@ def animals():
 def testimonial():
     return render_template('Testimonials.html')
 
-
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
