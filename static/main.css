@@ -1,5 +1,38 @@
-body{
-    margin: 0;
+h1{
+    text-align: center;
+    color: black;
+}
+.navbar{
+    background: #5A5151;
     font-family: 'Times New Roman', Times, serif;
+    padding-left: 15px;
+    padding-right: 15px;
+}
 
+.navdiv{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+a:hover{
+    background-color: #CBC7DE(0, 0%, 10%);
+}
+
+.logo a{
+    font-size: 30px;
+    font-weight: 600;
+    color: white;
+}
+
+li{
+    list-style: none;
+    display: inline-block;
+}
+
+li a{
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 25px;
 }
