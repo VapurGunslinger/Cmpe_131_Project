@@ -4,7 +4,7 @@ h1{
 }
 .navbar{
     background: #5A5151;
-    background-size: cover;
+    background-size: cover; 
     font-family: 'Times New Roman', Times, serif;
     padding-left: 15px;
     padding-right: 15px;
@@ -16,8 +16,9 @@ h1{
     justify-content: space-between;
 }
 
-a:hover{
-    background-color: #CBC7DE(0, 0%, 50%);
+.nav-link:hover{
+    background-color:#CBC7DE !important ;
+    /* color: #CBC7DE !important; */
 }
 
 .logo a{
