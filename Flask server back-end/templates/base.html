@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
     <title> Animal Shelter Website </title>
+
+    
+    {%block head%} 
+    {%endblock%}
+
 </head>
 <body>
     <nav class ="navbar">
@@ -12,10 +17,12 @@
           
             <div class="logo"><a href="#">Adoption center</a> </div> 
                 <ul>
-                    <li><a href = "{{url_for('home')}}"> &nbsp&nbsp Home &nbsp&nbsp</a></li>
-                    <li><a href = "{{url_for('adoption_steps')}}">  Appointment &nbsp&nbsp </a></li>
-                    <li><a href = "{{url_for('animals')}}">  Potential&Pets &nbsp&nbsp </a></li>
-                    <li><a href = "{{url_for('testimonial')}}">  Service &nbsp&nbsp</a></li>
+                    <li><a class="nav-link" href = "{{url_for('home')}}"> &nbsp&nbsp Home &nbsp&nbsp</a></li>
+                    <li><a class="nav-link" href = "{{url_for('adoption_steps')}}">  Appointment &nbsp&nbsp </a></li>
+                    <li><a class="nav-link" href = "{{url_for('animals')}}">  Potential&Pets &nbsp&nbsp </a></li>
+                    <li><a class="nav-link" href = "{{url_for('testimonial')}}">  Service &nbsp&nbsp</a></li>
+
+               
                     
                 </ul>   
             
@@ -23,6 +30,8 @@
     </nav>
 
 
+{%block body%} 
+{%endblock%}
 
 
 
