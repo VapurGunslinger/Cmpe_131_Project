@@ -3,16 +3,18 @@ h1{
     color: black;
 }
 
-
+/* Navagation bar related things  */
 .navbar{
+    /* position: absolute; */
+    /* top: 0 !important; */
     background: #5A5151;
-
     font-family: 'Times New Roman', Times, serif;
     padding-left: 15px;
     padding-right: 15px;
 }
 
 .navdiv{
+
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -22,7 +24,6 @@ h1{
 .nav-link:hover{
     background-color:#CBC7DE !important ;
     /* color: #CBC7DE !important; */
-
 }
 
 .logo a{
@@ -42,3 +43,38 @@ li a{
     font-weight: bold;
     margin-left: 25px;
 }
+
+/* End of nav bar stuff */
+
+/* Footer related things  */
+
+.footer{
+    position: absolute;
+
+    bottom: 0;
+    
+    /* display: flex;
+    align-items: center;
+    justify-content: space-between; */
+    /* left: 0;
+    z-index: 10; */
+}
+
+.navbar-footer{
+    /* position: absolute; */
+    /* top: 0 !important; */
+    background: #5A5151;
+    font-family: 'Times New Roman', Times, serif;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.navdiv-footer{
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* end of footer things */
