@@ -1,10 +1,10 @@
 from flask import Flask, render_template, url_for , request
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 #from datatime import datatime
 
 from views import views
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 app.config['SQLACHEMY_DATABASE_URI']= 'sqlite:///test.db'
 #db= SQLAlchemy(app)
 

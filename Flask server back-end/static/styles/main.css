@@ -3,6 +3,10 @@ h1{
     color: black;
 }
 
+* {
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
 /* Navagation bar related things  */
 .navbar{
     /* position: absolute; */
