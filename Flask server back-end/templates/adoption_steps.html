@@ -1,70 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Bring one home </title>
+{% extends "base.html" %}
+{%block head%}
     <style>
-        body{
+        .nav-link:hover{
+        background-color:#8CB898 !important ;}
+        /* color: #8CB898 !important; */
+        body {
             background-color: gray;
         }
-        .ellipse-container{
-            position:relative;
+        .rectangle {
             width: 580px;
-            height: 30px;
+            height: auto;
             background-color: rgba(225, 255, 0, 0.834);
-            border-radius: 40%;
-            padding:20px;
+            border-radius: 10px;
             text-align: center;
             line-height: 20px;
-            margin-bottom: 20px;
-            left:200px;
-            top:30px
+            padding-top: 15px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-bottom: 5px;
+            margin: auto; 
+            margin-top: 30px; 
+            justify-content: center;
             
+
         }
-        .ellipse-text{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: black; 
+        .text {
+            color: black;
+            line-height: 1.2;
             font-size: 20px; 
             font-family: Arial, sans-serif; 
         }
-
     </style>
-</head>
-<body>
-    <div class = "ellipse-container">
-        <div class = "ellipse-text"> How to bring a potential pet home </div>
+    {%endblock%}
+{%block body%}
+    <div class="rectangle", style = "height: 50px">
+        <div class="text">How to bring a potential pet home</div>
     </div>
 
-    <div class = "ellipse-container", style = "width: 600px; height: 100px;">
-        <div class = "ellipse-text"> Step 1: Schedule an appointment with one of them 
-            This is done through the our pets page. Just select one and schedual a time to get to know them.
-             </div>
+    <div class="rectangle" style="width: 600px; height: 100px;">
+        <div class="text">Step 1: Schedule an appointment with one of them. This is done through our pets page. Just select one and schedule a time to get to know them.</div>
     </div>
 
-    <div class = "ellipse-container", style = "width: 600px; height: 60px;">
-        <div class = "ellipse-text"> Step 2: Fill out an application 
-            This is so that we can see if you are a adequate fit for them
-             </div>
-    </div>
-    <div class = "ellipse-container", style = "width: 600px; height: 80px;">
-        <div class = "ellipse-text"> Step 3: Take them home
-            Once everything goes through you will be able to take them home and have them become part of your family 
-             </div>
+    <div class="rectangle" style="width: 600px; height: 60px;">
+        <div class="text">Step 2: Fill out an application. This is so that we can see if you are an adequate fit for them.</div>
     </div>
 
-    <div class = "ellipse-container", style = "width: 350px; height: 150px;left:300px">
-        <div class = "ellipse-text"> Note: Adoption fees 
-            Puppies under 6 months : $135
-            kittens under 4 months: $100
-            Rabbits: $20
-            Guinea Pigs: $10
-            Hamsters/ Mice: $5
-             </div>
+    <div class="rectangle" style="width: 600px; height: 80px;">
+        <div class="text">Step 3: Take them home. Once everything goes through, you will be able to take them home and have them become part of your family.</div>
     </div>
-    
-</body>
-</html>
+
+    <div class="rectangle" style="width: 280px; height: 150px;">
+        <div class="text">Note: Adoption fees. <br> Puppies: $135 <br> （under 6 months）<br> Kittens: $100 <br> (under 4 months) </div>
+    </div>
+{%endblock%}
+
