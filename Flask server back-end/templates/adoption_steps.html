@@ -1,16 +1,12 @@
 {% extends "base.html" %}
-
-
 {%block head%}
-
-<style>
-
-    .nav-link:hover{
-        background-color:#8CB898 !important ;
+    <style>
+        .nav-link:hover{
+        background-color:#8CB898 !important ;}
         /* color: #8CB898 !important; */
-    }
-
-
+        body {
+            background-color: gray;
+        }
         .rectangle {
             width: 580px;
             height: auto;
@@ -34,18 +30,10 @@
             font-size: 20px; 
             font-family: Arial, sans-serif; 
         }
-    
-
-</style>
-
-{%endblock%}
-
-
+    </style>
+    {%endblock%}
 {%block body%}
-
-<h1> Adoption </h1>
-
-<div class="rectangle", style = "height: 50px">
+    <div class="rectangle", style = "height: 50px">
         <div class="text">How to bring a potential pet home</div>
     </div>
 
@@ -64,5 +52,5 @@
     <div class="rectangle" style="width: 280px; height: 150px;">
         <div class="text">Note: Adoption fees. <br> Puppies: $135 <br> （under 6 months）<br> Kittens: $100 <br> (under 4 months) </div>
     </div>
-
 {%endblock%}
+
