@@ -2,22 +2,39 @@ from flask import Flask, render_template, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-from views import views
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///shelter.db'
+db = SQLAlchemy(app)
 
-app = Flask(__name__, static_folder="static")
-app.config['SQLACHEMY_DATABASE_URI']= 'sqlite:///animals.db'
-# db= SQLAlchemy(app)
+# class Animal(db.Model):
+#     __tablename__ = 'animals'
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(5), nullable=False)
+#     age = db.Column(db.Integer, nullable=False)
+#     species = db.Column(db.String(150), nullable=False)
+#     breed = db.Column(db.String(150), nullable=False)
+#     weight = db.Column(db.Numeric, nullable=False)
+#     gender = db.Column(db.Integer, nullable=False)
+#     decription = db.Column(db.Text, nullable=True)
+#     date_added = db.Column(db.DateTime, default=datetime.utcnow)
+#     appointnments = db.relationship('Appointment', backref='role')
 
-# class Appointment(db.module):
-#     name= db.Column (db.String(100),nullable=False)
-#     phoneNumber =db.Colomn(db.String(10), nullable=False)
-    
-#     #date_created= db.Colomn(db.DateTime, default datetime.utcnow)
 #     def __repr__(self):
-#         return '<Appointment %r>' % self.name #%self.appointment_date
+#             return '<Name %r>' % self.name
+
+# class Appointment(db.Model):
+#     __tablename__ = 'appointments'
+#     name = db.Column(db.String(100),nullable=False)
+#     phoneNumber = db.Column(db.String(10), nullable=False)
+#     animal_id = db.Column(db.Integer, db.ForeignKey('animals.id'))
+#     date = db.Column(db.DateTime)
+#     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    
+#     def __repr__(self):
+#         return '<Appointment %r>' % self.name 
 
 
-##app.register_blueprint(views, url_prefix=("/"))
+# app.register_blueprint(views, url_prefix=("/"))
 
 @app.route('/')
 def home():
