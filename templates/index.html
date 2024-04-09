@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+
+{%block head%}
+
+<style>
+
+    .nav-link:hover{
+        background-color:#CBC7DE !important ;
+        /* color: #CBC7DE !important; */
+    }
+
+    #rcorners1 {
+    border-radius: 100px;
+    background: #CBC7DE;
+    padding: 20px; 
+    margin: auto;
+    width: auto;
+    height: auto;  
+    text-align: center;
+    }
+
+    .container {
+    display: grid;
+    align-items: center; 
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5px;
+    }
+
+    img {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        text-align: right;  
+    }
+
+    image {
+        width: auto;  
+        text-align: right;  
+        padding: 15px;  
+        border: 3px solid white;  
+    }
+
+</style>
+
+
+{%endblock%}
+
+
+{%block body%}
+
+<div class="container">
+    <div>
+        <img src= "{{ url_for('static', filename='images/puppy.jpg') }}" class="image" >
+    </div>
+    <div>
+        <h3 align = "center"> What Each Animal Means to Us </h3>
+        <p id = "rcorners1"> 
+            Here at (animal shelter name), we have made it our mission to provide for 
+            these animals while helping them find their forever home. Your new fuzzy friend 
+            could be here, waiting for you. Adopt a pet today!
+        </p id = "rcorners1">
+    </div>
+</div>
+
+<div class="container">
+    <p id = "rcorners1"> 
+        Address: <br>
+        Visiting Hours: <br>
+        Monday - Saturday <br>
+        8:00 AM to 5:00 PM <br>
+    </p>
+
+</div>
+
+{%endblock%}
+
