@@ -1,6 +1,9 @@
 from flask import Flask, render_template, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
 from datetime import datetime
 
 app = Flask(__name__)
@@ -17,8 +20,8 @@ class Animal(db.Model):
     breed = db.Column(db.String(150), nullable=False)
     weight = db.Column(db.Numeric, nullable=False)
     gender = db.Column(db.Integer, nullable=False)
-    decription = db.Column(db.Text, nullable=True)
-    image_path = db.Column(db.String(300))
+    description = db.Column(db.Text, nullable=True)
+    image_path = db.Column(db.String(300), nullable=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -31,7 +34,7 @@ class Appointment(db.Model):
     phoneNumber = db.Column(db.String(10), nullable=False)
     animal_id = db.Column(db.Integer, db.ForeignKey('animals.id'))
     date = db.Column(db.DateTime)
-   # date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
     
     def __repr__(self):
         return '<Appointment %r>' % self.name 
