@@ -1,11 +1,12 @@
 from flask import Flask, render_template, url_for, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///shelter.db'
 db = SQLAlchemy(app)
-db.init_app(app)
+migrate = Migrate(app, db)
 
 class Animal(db.Model):
     __tablename__ = 'animals'
@@ -17,6 +18,7 @@ class Animal(db.Model):
     weight = db.Column(db.Numeric, nullable=False)
     gender = db.Column(db.Integer, nullable=False)
     decription = db.Column(db.Text, nullable=True)
+    image_path = db.Column(db.String(300))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -48,6 +50,11 @@ def adoption_steps():
 @app.route('/Animals')
 def animals():
     return render_template('Animals.html')
+
+# @app.route('/Animals/<int:id>')
+# def animals():
+#     animal = Animal.query.get_or_404(id)
+#     return render_template('Animalpage.html', animal = animal)
 
 @app.route('/Testimonial')
 def testimonial():
