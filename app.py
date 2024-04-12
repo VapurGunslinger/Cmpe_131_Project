@@ -54,8 +54,12 @@ def adoption_steps():
 def animals():
     return render_template('Animals.html')
 
+@app.route('/Add_Animal')
+def add_animal():
+    return render_template('add_animal.html')
+
 # @app.route('/Animals/<int:id>')
-# def animals():
+# def animalpage():
 #     animal = Animal.query.get_or_404(id)
 #     return render_template('Animalpage.html', animal = animal)
 
