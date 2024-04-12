@@ -25,29 +25,22 @@
 
   <div class="container-lg">
     <div class="row row-cols-4">
-      <div class="col">
-        <div class="card">
-          <img src="..." class="card-img-top" alt="animal's image">
-          <div class="card-body">
-            <h5 class="card-title"> Animal name </h5>
-            <p class="card-text"> Gender: </p>
-            <p class="card-text"> Age: </p>
-            <a href="#" class="btn btn-primary">View</a>
+      {% for animal in all_animals %}
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="animal's image">
+            <div class="card-body">
+              <h5 class="card-title"> {{animal.name}} </h5>
+              <p class="card-text"> Gender: {{animal.gender}}
+              </br>Age: {{animal.age}}
+              </p>
+              <a href=" {{url_for('animalpage', id=animal.id)}}" class="btn btn-primary">View</a>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="..." class="card-img-top" alt="animal's image">
-          <div class="card-body">
-            <h5 class="card-title"> Animal name </h5>
-            <p class="card-text"> Gender: </p>
-            <p class="card-text"> Age: </p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
+      {% endfor %}
+      
+      <!-- <div class="col">
         <div class="card">
           <img src="..." class="card-img-top" alt="animal's image">
           <div class="card-body">
@@ -57,8 +50,19 @@
             <a href="#" class="btn btn-primary">Go somewhere</a>
           </div>
         </div>
-      </div>
-      <div class="col">
+      </div> -->
+      <!-- <div class="col">
+        <div class="card">
+          <img src="..." class="card-img-top" alt="animal's image">
+          <div class="card-body">
+            <h5 class="card-title"> Animal name </h5>
+            <p class="card-text"> Gender: </p>
+            <p class="card-text"> Age: </p>
+            <button href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col">
         <div class="card">
           <img src="..." class="card-img-top" alt="animal's image">
           <div class="card-body">
@@ -68,13 +72,14 @@
             <a href="#" class="btn btn-primary">Go somewhere</a>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
   </br>
   <div class="d-flex justify-content-center">
-    <a href="{{url_for('add_animal')}}" class="btn btn-primary">Add animal</a>
+    <a href="{{url_for('add_animal')}}" class="btn btn-primary" id="addanimal">Add animal</a>
   </div>
+  
   
 
 </div>
