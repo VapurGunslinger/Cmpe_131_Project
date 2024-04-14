@@ -4,13 +4,11 @@
 {%block head%}
 
 <style>
+  .nav-link:hover {
+    background-color: #657C99 !important;
+    /* color: #657C99 !important; */
 
-    .nav-link:hover{
-        background-color:#657C99 !important ;
-        /* color: #657C99 !important; */
-    
-    }
-
+  }
 </style>
 
 {%endblock%}
@@ -18,7 +16,74 @@
 
 {%block body%}
 
-<h1>You are on animals</h1>
+
+<div class="container-fluid">
+  <div class="d-flex justify-content-center">
+    <h1>Adoptable Animals</h1>
+  </div>
+  </br>
+
+  <div class="container-lg">
+    <div class="row row-cols-4">
+      {% for animal in all_animals %}
+        <div class="col">
+          <div class="card">
+            <img src="..." class="card-img-top" alt="animal's image">
+            <div class="card-body">
+              <h5 class="card-title"> {{animal.name}} </h5>
+              <p class="card-text"> Gender: {{animal.gender}}
+              </br>Age: {{animal.age}}
+              </p>
+              <a href=" {{url_for('animalpage', id=animal.id)}}" class="btn btn-primary">View</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      
+      <!-- <div class="col">
+        <div class="card">
+          <img src="..." class="card-img-top" alt="animal's image">
+          <div class="card-body">
+            <h5 class="card-title"> Animal name </h5>
+            <p class="card-text"> Gender: </p>
+            <p class="card-text"> Age: </p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col">
+        <div class="card">
+          <img src="..." class="card-img-top" alt="animal's image">
+          <div class="card-body">
+            <h5 class="card-title"> Animal name </h5>
+            <p class="card-text"> Gender: </p>
+            <p class="card-text"> Age: </p>
+            <button href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div class="col">
+        <div class="card">
+          <img src="..." class="card-img-top" alt="animal's image">
+          <div class="card-body">
+            <h5 class="card-title"> Animal name </h5>
+            <p class="card-text"> Gender: </p>
+            <p class="card-text"> Age: </p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  </br>
+  <div class="d-flex justify-content-center">
+    <a href="{{url_for('add_animal')}}" class="btn btn-primary" id="addanimal">Add animal</a>
+  </div>
+  
+  
+
+</div>
+
+
 
 {%endblock%}
-
