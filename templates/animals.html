@@ -28,7 +28,7 @@
       {% for animal in all_animals %}
         <div class="col">
           <div class="card">
-            <img src="..." class="card-img-top" alt="animal's image">
+            <img src="{{ url_for('static', filename='images/default_image.jpg') }}" class="card-img-top" alt="animal's image">
             <div class="card-body">
               <h5 class="card-title"> {{animal.name}} </h5>
               <p class="card-text"> Gender: {{animal.gender}}

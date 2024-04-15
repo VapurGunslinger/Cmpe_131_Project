@@ -26,14 +26,13 @@ nav {
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
   }
   
-  nav a:hover, a:active, a:visited {
+  nav li:hover, a:active, a:visited {
     transition: 0.3s ease;
     color: white;
-    font-size: 20px;
-    text-decoration: none;
-    padding: 20px 0;
-    margin: 0 5px;
-    font-size: 17px;
+    /* text-decoration: none;
+    padding: 0px 0;
+    margin: 0 0px;
+    font-size: 15=6px; */
   }
   /* nav a:hover {
     border-bottom: 4px solid white;
