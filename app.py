@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import *
 from wtforms.validators import DataRequired, Optional, NumberRange
 
 # from werkzeug.utils import secure_filename
@@ -50,9 +50,9 @@ class Appointment(db.Model):
 # Forms
 class animalForm(FlaskForm):
     name = StringField("Animal Name: ", validators=[DataRequired()])
-    age = IntegerField("Age: ", validators=[Optional()])
-    species = StringField("Species: ", validators=[DataRequired()])
-    gender = IntegerField("Gender: ", validators=[DataRequired(), NumberRange(min=0, max=3, message = "Input must be between 0-3.")] )
+    age = IntegerField("Age: ", validators=[Optional(), NumberRange(min=0, message = "Input must be greater than 0.")])
+    species = SelectField(u"Species: ",  choices=[(0, 'Cat'),(1, 'Dog')], validators=[DataRequired()])
+    gender = SelectField(u"Gender: ", choices=[(0, 'Male'),(1, 'Female'), (2, 'Neutered'), (3, 'Spayed')], validators=[DataRequired(),] )
     submit = SubmitField("Submit")
 
 
@@ -89,14 +89,10 @@ def add_animal():
         species = form.species.data
         gender = form.gender.data
         #clear data
-        flash(name + " added successfully!")
+        flash(name + " was added successfully!")
         form = animalForm(formdata=None)
     all_animals = Animal.query.order_by(Animal.id)
-    return render_template('add_animal.html',        
-        name = name,
-        age = age,
-        species = species,
-        gender = gender,
+    return render_template('add_animal.html',  
         form = form,
         all_animals=all_animals)
 
@@ -104,6 +100,26 @@ def add_animal():
 def animalpage(id):
     animal = Animal.query.get_or_404(id)
     return render_template('Animalpage.html', animal = animal)
+
+@app.route('/Animals/Add_Animal/Delete/<int:id>')
+def delete(id):
+    animal_delete = Animal.query.get_or_404(id)
+    form = animalForm()
+    try:
+        db.session.delete(animal_delete)
+        db.session.commit()
+        flash("Animal deleted successfully.")
+
+        all_animals = Animal.query.order_by(Animal.id)
+        return render_template('add_animal.html',  
+            form = form,
+            all_animals=all_animals)
+    except:
+        flash("Unable to delete the animal from the database.")
+        all_animals = Animal.query.order_by(Animal.id)
+        return render_template('add_animal.html',  
+            form = form,
+            all_animals=all_animals)
 
 @app.route('/Testimonial')
 def testimonial():

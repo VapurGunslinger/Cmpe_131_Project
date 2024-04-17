@@ -27,7 +27,7 @@
     <div class="row row-cols-4">
       {% for animal in all_animals %}
         <div class="col">
-          <div class="card">
+          <div class="card" style="margin-bottom: 25px;">
             <img src="{{ url_for('static', filename='images/default_image.jpg') }}" class="card-img-top" alt="animal's image">
             <div class="card-body">
               <h5 class="card-title"> {{animal.name}} </h5>
