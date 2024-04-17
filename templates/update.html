@@ -18,7 +18,7 @@
         <h1> Update Animal </h1>
     </div>
     <div>
-        <form action="/update/{{animal_update.id}}" method="POST" enctype="multipart/form-data">
+        <form action="/Animals/Add_Animal/Update/{{animal_update.id}}" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             {{ form.name.label(class="form-label") }}
             {{ form.name(class="form-control") }}
@@ -31,6 +31,18 @@
             </br>
             {{ form.gender.label(class="form-label") }}
             {{ form.gender(class="form-control") }}
+            </br>
+            {{ form.breed.label(class="form-label") }}
+            {{ form.breed(class="form-control") }}
+            </br>
+            {{ form.weight.label(class="form-label") }}
+            {{ form.weight(class="form-control") }}
+            </br>
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control") }}
+            </br>
+            {{ form.image.label(class="form-label") }}
+            {{ form.image(class="form-control") }}
             </br>
             {{ form.submit(class="btn btn-primary") }}
     

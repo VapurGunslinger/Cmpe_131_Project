@@ -28,11 +28,12 @@
       {% for animal in all_animals %}
         <div class="col-sm-3">
           <div class="card" style="margin-bottom: 25px;">
-            {% if animal.image_path  %}
+            {% if animal.image_path %}
             <img src="{{ url_for('static', filename='animal_images/' + animal.image_path)}}" class="card-img-top" alt="animal's image"
             style="width: 304px; height: 252px; object-fit: cover;">
-            {% else  %}
-            <img src="{{ url_for('static', filename='images/default_image.jpg') }}" class="card-img-top" alt="animal's image">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/default_image.jpg') }}" class="card-img-top" alt="default image"
+            style="width: 304px; height: 252px; object-fit: cover;">
             {% endif %}
             
             <div class="card-body">

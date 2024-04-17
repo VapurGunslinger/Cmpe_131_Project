@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, flash
+from flask import Flask, render_template, url_for, request, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf import FlaskForm
@@ -53,7 +53,7 @@ class Appointment(db.Model):
 # Forms
 class animalForm(FlaskForm):
     name = StringField("Animal Name: ", validators=[DataRequired()])
-    age = IntegerField("Age: ", validators=[Optional(), NumberRange(min=0, message = "Input must be greater than 0.")])
+    age = IntegerField("Age: ", validators=[DataRequired(), NumberRange(min=0, message = "Input must be greater than 0.")])
     species = SelectField(u"Species: ",  choices=[(0, 'Cat'),(1, 'Dog')], validators=[DataRequired()])
     gender = SelectField(u"Gender: ", choices=[(0, 'Male'),(1, 'Female'), (2, 'Neutered Male'), (3, 'Spayed Female')], validators=[DataRequired(),] )
     
@@ -91,23 +91,28 @@ def add_animal():
                         gender = form.gender.data)
         db.session.add(animal)
         name = form.name.data
-        animal.image_path = request.files['image']
         # Save image
-        image_filename = secure_filename(animal.image_path.filename)
-        image_uniquename = str(uuid.uuid1()) + "_" + image_filename
-        saver = request.files['image']
-        animal.image_path = image_uniquename
-        
-        try:
-            saver.save(os.path.join(app.config['UPLOAD_FOLDER'], image_uniquename))
-            db.session.commit()
-            flash(name + " was added successfully!")
-            form = animalForm(formdata=None)
-        except:
-            flash("Error adding " + name + " to database.")
+        if request.files.get("image"):
+            animal.image_path = request.files['image']
+            image_filename = secure_filename(animal.image_path.filename)
+            image_uniquename = str(uuid.uuid1()) + "_" + image_filename
+            saver = request.files['image']
+            animal.image_path = image_uniquename
+            try:
+                saver.save(os.path.join(app.config['UPLOAD_FOLDER'], image_uniquename))
+                db.session.commit()
+                flash(name + " was added successfully!")
+                form = animalForm(formdata=None)
+            except:
+                flash("Error adding " + name + " to database.")
+        else:
+            try:
+                db.session.commit()
+                flash(name + " was added successfully!")
+                form = animalForm(formdata=None)
+            except:
+                flash("Error adding " + name + " to database.")
             
-
-        
     all_animals = Animal.query.order_by(Animal.id)
     return render_template('add_animal.html',  
         form = form,
@@ -126,38 +131,44 @@ def delete(id):
         db.session.delete(animal_delete)
         db.session.commit()
         flash("Animal deleted successfully.")
-
-        all_animals = Animal.query.order_by(Animal.id)
-        return render_template('add_animal.html',  
-            form = form,
-            all_animals=all_animals)
+        return redirect("/Animals/Add_Animal")
     except:
         flash("Unable to delete the animal from the database.")
-        all_animals = Animal.query.order_by(Animal.id)
-        return render_template('add_animal.html',  
-            form = form,
-            all_animals=all_animals)
+        return redirect("/Animals/Add_Animal")
     
 @app.route('/Animals/Add_Animal/Update/<int:id>', methods=['GET','POST']) 
 def update(id):
     animal_update = Animal.query.get_or_404(id)
     form = animalForm(obj=animal_update)
     if request.method == "POST":
-        animal_update.name = request.form['name']
-        animal_update.age = request.form['age']
-        animal_update.species = request.form['species']
-        animal_update.gender = request.form['age']
-        try:
+        form.populate_obj(animal_update)
+        name = form.name.data
+        if request.files.get("image"):
+            animal_update.image_path = request.files['image']
+            image_filename = secure_filename(animal_update.image_path.filename)
+            image_uniquename = str(uuid.uuid1()) + "_" + image_filename
+            saver = request.files['image']
+            animal_update.image_path = image_uniquename
+            try:
+                saver.save(os.path.join(app.config['UPLOAD_FOLDER'], image_uniquename))
                 db.session.commit()
-                flash("Animal updated successfully!")
-                return render_template("update.html", form=form, animal_update=animal_update)
-        except:
-               flash("Error with updating animal.")
-               return render_template("update.html", form=form, animal_update=animal_update)
+                flash(name + " was updated successfully!")
+                return redirect(url_for('update', id=id))
+            except:
+                flash("Error adding to database.")
+                return redirect(url_for('update', id=id))
+        else:
+            try:
+                db.session.commit()
+                flash(name + " updated successfully!")
+                return redirect(url_for('update', id=id))
+            except:
+                flash("Error with updating animal.")
+                return redirect(url_for('update', id=id))
     else:
        return render_template("update.html", form=form, animal_update=animal_update)
 
-       
+
            
            
 
