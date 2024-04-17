@@ -1,13 +1,13 @@
-from flask import Flask, render_template, url_for, request, flash
+from flask import Flask, render_template, url_for, request, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import *
 from wtforms.validators import DataRequired, Optional, NumberRange
-
-# from werkzeug.utils import secure_filename
-# import uuid as uuid
-# import os
+from flask_wtf.file import FileField
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
 from datetime import datetime
 
 app = Flask(__name__)
@@ -16,18 +16,21 @@ app.config['SECRET_KEY'] = "shelterkey"
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+ANIMAL_IMAGE_FOLDER = "static/animal_images/"
+app.config['UPLOAD_FOLDER'] = ANIMAL_IMAGE_FOLDER 
+
 class Animal(db.Model):
     __tablename__ = 'animals'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(5), nullable=False)
     age = db.Column(db.Integer, nullable=True)
-    species = db.Column(db.String(150), nullable=False)
+    species = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.Integer, nullable=False)
 
     breed = db.Column(db.String(150), nullable=True)
     weight = db.Column(db.Numeric, nullable=True)
     description = db.Column(db.Text, nullable=True)
-    image_path = db.Column(db.String(300), nullable=True)
+    image_path = db.Column(db.String(), nullable=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -50,11 +53,15 @@ class Appointment(db.Model):
 # Forms
 class animalForm(FlaskForm):
     name = StringField("Animal Name: ", validators=[DataRequired()])
-    age = IntegerField("Age: ", validators=[Optional()])
-    species = StringField("Species: ", validators=[DataRequired()])
-    gender = IntegerField("Gender: ", validators=[DataRequired(), NumberRange(min=0, max=3, message = "Input must be between 0-3.")] )
+    age = IntegerField("Age: ", validators=[DataRequired(), NumberRange(min=0, message = "Input must be greater than 0.")])
+    species = SelectField(u"Species: ",  choices=[(0, 'Cat'),(1, 'Dog')], validators=[DataRequired()])
+    gender = SelectField(u"Gender: ", choices=[(0, 'Male'),(1, 'Female'), (2, 'Neutered Male'), (3, 'Spayed Female')], validators=[DataRequired(),] )
+    
+    breed = StringField("Breed: ", validators=[Optional()])
+    weight = DecimalField("Weight (lbs): ", validators=[Optional()])
+    description = TextAreaField('Description: ', [validators.optional(), validators.length(max=800)])
+    image = FileField("Animal image: ")
     submit = SubmitField("Submit")
-
 
 @app.route('/')
 def home():
@@ -83,20 +90,31 @@ def add_animal():
                         species = form.species.data,
                         gender = form.gender.data)
         db.session.add(animal)
-        db.session.commit()
         name = form.name.data
-        age = form.age.data
-        species = form.species.data
-        gender = form.gender.data
-        #clear data
-        flash(name + " added successfully!")
-        form = animalForm(formdata=None)
+        # Save image
+        if request.files.get("image"):
+            animal.image_path = request.files['image']
+            image_filename = secure_filename(animal.image_path.filename)
+            image_uniquename = str(uuid.uuid1()) + "_" + image_filename
+            saver = request.files['image']
+            animal.image_path = image_uniquename
+            try:
+                saver.save(os.path.join(app.config['UPLOAD_FOLDER'], image_uniquename))
+                db.session.commit()
+                flash(name + " was added successfully!")
+                form = animalForm(formdata=None)
+            except:
+                flash("Error adding " + name + " to database.")
+        else:
+            try:
+                db.session.commit()
+                flash(name + " was added successfully!")
+                form = animalForm(formdata=None)
+            except:
+                flash("Error adding " + name + " to database.")
+            
     all_animals = Animal.query.order_by(Animal.id)
-    return render_template('add_animal.html',        
-        name = name,
-        age = age,
-        species = species,
-        gender = gender,
+    return render_template('add_animal.html',  
         form = form,
         all_animals=all_animals)
 
@@ -104,6 +122,58 @@ def add_animal():
 def animalpage(id):
     animal = Animal.query.get_or_404(id)
     return render_template('Animalpage.html', animal = animal)
+
+@app.route('/Animals/Add_Animal/Delete/<int:id>')
+def delete(id):
+    animal_delete = Animal.query.get_or_404(id)
+    form = animalForm()
+    try:
+        db.session.delete(animal_delete)
+        db.session.commit()
+        flash("Animal deleted successfully.")
+        return redirect("/Animals/Add_Animal")
+    except:
+        flash("Unable to delete the animal from the database.")
+        return redirect("/Animals/Add_Animal")
+    
+@app.route('/Animals/Add_Animal/Update/<int:id>', methods=['GET','POST']) 
+def update(id):
+    animal_update = Animal.query.get_or_404(id)
+    form = animalForm(obj=animal_update)
+    if request.method == "POST":
+        form.populate_obj(animal_update)
+        name = form.name.data
+        if request.files.get("image"):
+            animal_update.image_path = request.files['image']
+            image_filename = secure_filename(animal_update.image_path.filename)
+            image_uniquename = str(uuid.uuid1()) + "_" + image_filename
+            saver = request.files['image']
+            animal_update.image_path = image_uniquename
+            try:
+                saver.save(os.path.join(app.config['UPLOAD_FOLDER'], image_uniquename))
+                db.session.commit()
+                flash(name + " was updated successfully!")
+                return redirect(url_for('update', id=id))
+            except:
+                flash("Error adding to database.")
+                return redirect(url_for('update', id=id))
+        else:
+            try:
+                db.session.commit()
+                flash(name + " updated successfully!")
+                return redirect(url_for('update', id=id))
+            except:
+                flash("Error with updating animal.")
+                return redirect(url_for('update', id=id))
+    else:
+       return render_template("update.html", form=form, animal_update=animal_update)
+
+
+           
+           
+
+           
+
 
 @app.route('/Testimonial')
 def testimonial():

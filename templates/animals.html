@@ -26,13 +26,30 @@
   <div class="container-lg">
     <div class="row row-cols-4">
       {% for animal in all_animals %}
-        <div class="col">
-          <div class="card">
-            <img src="{{ url_for('static', filename='images/default_image.jpg') }}" class="card-img-top" alt="animal's image">
+        <div class="col-sm-3">
+          <div class="card" style="margin-bottom: 25px;">
+            {% if animal.image_path %}
+            <img src="{{ url_for('static', filename='animal_images/' + animal.image_path)}}" class="card-img-top" alt="animal's image"
+            style="width: 304px; height: 252px; object-fit: cover;">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/default_image.jpg') }}" class="card-img-top" alt="default image"
+            style="width: 304px; height: 252px; object-fit: cover;">
+            {% endif %}
+            
             <div class="card-body">
               <h5 class="card-title"> {{animal.name}} </h5>
-              <p class="card-text"> Gender: {{animal.gender}}
+              <p class="card-text"> Gender: 
+                {% if animal.gender==0 %}
+                  Male
+                {% elif animal.gender==1 %}
+                  Female
+                {% elif animal.gender==2 %}
+                  Neutered Male
+                {% elif animal.gender==3 %}
+                  Spayed Female
+                {% endif %}
               </br>Age: {{animal.age}}
+
               </p>
               <a href=" {{url_for('animalpage', id=animal.id)}}" class="btn btn-primary">View</a>
             </div>
