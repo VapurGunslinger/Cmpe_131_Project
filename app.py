@@ -4,10 +4,10 @@ from flask_migrate import Migrate
 from flask_wtf import FlaskForm
 from wtforms import *
 from wtforms.validators import DataRequired, Optional, NumberRange
-
-# from werkzeug.utils import secure_filename
-# import uuid as uuid
-# import os
+from flask_wtf.file import FileField
+from werkzeug.utils import secure_filename
+import uuid as uuid
+import os
 from datetime import datetime
 
 app = Flask(__name__)
@@ -15,6 +15,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shelter.db'
 app.config['SECRET_KEY'] = "shelterkey"
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+ANIMAL_IMAGE_FOLDER = "static/animal_images/"
+app.config['UPLOAD_FOLDER'] = ANIMAL_IMAGE_FOLDER 
 
 class Animal(db.Model):
     __tablename__ = 'animals'
@@ -27,7 +30,7 @@ class Animal(db.Model):
     breed = db.Column(db.String(150), nullable=True)
     weight = db.Column(db.Numeric, nullable=True)
     description = db.Column(db.Text, nullable=True)
-    image_path = db.Column(db.String(300), nullable=True)
+    image_path = db.Column(db.String(), nullable=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -53,8 +56,12 @@ class animalForm(FlaskForm):
     age = IntegerField("Age: ", validators=[Optional(), NumberRange(min=0, message = "Input must be greater than 0.")])
     species = SelectField(u"Species: ",  choices=[(0, 'Cat'),(1, 'Dog')], validators=[DataRequired()])
     gender = SelectField(u"Gender: ", choices=[(0, 'Male'),(1, 'Female'), (2, 'Neutered Male'), (3, 'Spayed Female')], validators=[DataRequired(),] )
+    
+    breed = StringField("Breed: ", validators=[Optional()])
+    weight = DecimalField("Weight (lbs): ", validators=[Optional()])
+    description = TextAreaField('Description: ', [validators.optional(), validators.length(max=800)])
+    image = FileField("Animal image: ")
     submit = SubmitField("Submit")
-
 
 @app.route('/')
 def home():
@@ -83,14 +90,24 @@ def add_animal():
                         species = form.species.data,
                         gender = form.gender.data)
         db.session.add(animal)
-        db.session.commit()
         name = form.name.data
-        age = form.age.data
-        species = form.species.data
-        gender = form.gender.data
-        #clear data
-        flash(name + " was added successfully!")
-        form = animalForm(formdata=None)
+        animal.image_path = request.files['image']
+        # Save image
+        image_filename = secure_filename(animal.image_path.filename)
+        image_uniquename = str(uuid.uuid1()) + "_" + image_filename
+        saver = request.files['image']
+        animal.image_path = image_uniquename
+        
+        try:
+            saver.save(os.path.join(app.config['UPLOAD_FOLDER'], image_uniquename))
+            db.session.commit()
+            flash(name + " was added successfully!")
+            form = animalForm(formdata=None)
+        except:
+            flash("Error adding " + name + " to database.")
+            
+
+        
     all_animals = Animal.query.order_by(Animal.id)
     return render_template('add_animal.html',  
         form = form,

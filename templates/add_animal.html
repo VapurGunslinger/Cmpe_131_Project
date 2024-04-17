@@ -18,7 +18,7 @@
         <h1> Add an animal: </h1>
     </div>
     <div>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             {{ form.name.label(class="form-label") }}
             {{ form.name(class="form-control") }}
@@ -31,6 +31,18 @@
             </br>
             {{ form.gender.label(class="form-label") }}
             {{ form.gender(class="form-control") }}
+            </br>
+            {{ form.breed.label(class="form-label") }}
+            {{ form.breed(class="form-control") }}
+            </br>
+            {{ form.weight.label(class="form-label") }}
+            {{ form.weight(class="form-control") }}
+            </br>
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control") }}
+            </br>
+            {{ form.image.label(class="form-label") }}
+            {{ form.image(class="form-control") }}
             </br>
             {{ form.submit(class="btn btn-primary") }}
     
@@ -49,6 +61,7 @@
             <th scope="col">Species</th>
             <th scope="col">Age</th>
             <th scope="col">Gender</th>
+            <th scope="col">image</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -60,6 +73,7 @@
                 <td>{{animal.species}}</td>
                 <td>{{animal.age}}</td>
                 <td>{{animal.gender}}</td>
+                <td>{{animal.image_path}}</td>
                 <td> <a href="{{url_for('update', id=animal.id)}}" class="btn btn-success" id="update">Edit</a></td>
                 <td> <a href="{{url_for('delete', id=animal.id)}}" class="btn btn-danger" id="delete">Delete</a></td>
                 
