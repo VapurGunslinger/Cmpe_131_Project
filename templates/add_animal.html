@@ -60,8 +60,9 @@
                 <td>{{animal.species}}</td>
                 <td>{{animal.age}}</td>
                 <td>{{animal.gender}}</td>
-                <td> 
-                    <a href="{{url_for('delete', id=animal.id)}}" class="btn btn-danger" id="delete">Delete</a></td>
+                <td> <a href="{{url_for('update', id=animal.id)}}" class="btn btn-success" id="update">Edit</a></td>
+                <td> <a href="{{url_for('delete', id=animal.id)}}" class="btn btn-danger" id="delete">Delete</a></td>
+                
             </tr>
             {% endfor %}
         </tbody>

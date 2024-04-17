@@ -21,7 +21,7 @@ class Animal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(5), nullable=False)
     age = db.Column(db.Integer, nullable=True)
-    species = db.Column(db.String(150), nullable=False)
+    species = db.Column(db.Integer, nullable=False)
     gender = db.Column(db.Integer, nullable=False)
 
     breed = db.Column(db.String(150), nullable=True)
@@ -52,7 +52,7 @@ class animalForm(FlaskForm):
     name = StringField("Animal Name: ", validators=[DataRequired()])
     age = IntegerField("Age: ", validators=[Optional(), NumberRange(min=0, message = "Input must be greater than 0.")])
     species = SelectField(u"Species: ",  choices=[(0, 'Cat'),(1, 'Dog')], validators=[DataRequired()])
-    gender = SelectField(u"Gender: ", choices=[(0, 'Male'),(1, 'Female'), (2, 'Neutered'), (3, 'Spayed')], validators=[DataRequired(),] )
+    gender = SelectField(u"Gender: ", choices=[(0, 'Male'),(1, 'Female'), (2, 'Neutered Male'), (3, 'Spayed Female')], validators=[DataRequired(),] )
     submit = SubmitField("Submit")
 
 
@@ -120,6 +120,32 @@ def delete(id):
         return render_template('add_animal.html',  
             form = form,
             all_animals=all_animals)
+    
+@app.route('/Animals/Add_Animal/Update/<int:id>', methods=['GET','POST']) 
+def update(id):
+    animal_update = Animal.query.get_or_404(id)
+    form = animalForm(obj=animal_update)
+    if request.method == "POST":
+        animal_update.name = request.form['name']
+        animal_update.age = request.form['age']
+        animal_update.species = request.form['species']
+        animal_update.gender = request.form['age']
+        try:
+                db.session.commit()
+                flash("Animal updated successfully!")
+                return render_template("update.html", form=form, animal_update=animal_update)
+        except:
+               flash("Error with updating animal.")
+               return render_template("update.html", form=form, animal_update=animal_update)
+    else:
+       return render_template("update.html", form=form, animal_update=animal_update)
+
+       
+           
+           
+
+           
+
 
 @app.route('/Testimonial')
 def testimonial():
