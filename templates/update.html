@@ -15,10 +15,10 @@
       </div>
     {% endfor %}
     <div class="d-flex justify-content-left">
-        <h1> Add an animal: </h1>
+        <h1> Update Animal </h1>
     </div>
     <div>
-        <form method="POST" enctype="multipart/form-data">
+        <form action="/Animals/Add_Animal/Update/{{animal_update.id}}" method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             {{ form.name.label(class="form-label") }}
             {{ form.name(class="form-control") }}
@@ -48,41 +48,6 @@
     
         </form>
     </div>
-    </br></br>
-
-    <div class="d-flex justify-content-left">
-        <h3> Animals in shelter: </h3>
-    </div>
-    <table class="table table-hover table-striped">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Species</th>
-            <th scope="col">Age</th>
-            <th scope="col">Gender</th>
-            <th scope="col">image</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for animal in all_animals %}
-            <tr>
-                <th scope="row">{{animal.id}}</th>
-                <td>{{animal.name}}</td>
-                <td>{{animal.species}}</td>
-                <td>{{animal.age}}</td>
-                <td>{{animal.gender}}</td>
-                <td>{{animal.image_path}}</td>
-                <td> <a href="{{url_for('update', id=animal.id)}}" class="btn btn-success" id="update">Edit</a></td>
-                <td> <a href="{{url_for('delete', id=animal.id)}}" class="btn btn-danger" id="delete">Delete</a></td>
-                
-            </tr>
-            {% endfor %}
-        </tbody>
-      </table>
-    
-
 </div>
 
 
