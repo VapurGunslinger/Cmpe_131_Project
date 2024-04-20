@@ -11,20 +11,13 @@
     }
 
     #rcorners1 {
-    border-radius: 100px;
-    background: #CBC7DE;
-    padding: 20px; 
-    margin: auto;
-    width: auto;
-    height: auto;  
-    text-align: center;
-    }
-
-    .container {
-    display: grid;
-    align-items: center; 
-    grid-template-columns: 1fr 1fr;
-    column-gap: 5px;
+        border-radius: 100px;
+        background: #CBC7DE;
+        padding: 20px; 
+        margin: auto;
+        width: auto;
+        height: auto;  
+        text-align: center;
     }
 
     img {
@@ -35,7 +28,8 @@
     }
 
     image {
-        width: auto;  
+        width: auto;
+        height: auto;  
         text-align: right;  
         padding: 15px;  
         border: 3px solid white;  
@@ -49,28 +43,59 @@
 
 {%block body%}
 
-<div class="container">
-    <div>
-        <img src= "{{ url_for('static', filename='images/puppy.jpg') }}" class="image" >
-    </div>
-    <div>
-        <h3 align = "center"> What Each Animal Means to Us </h3>
-        <p id = "rcorners1"> 
-            Here at (animal shelter name), we have made it our mission to provide for 
-            these animals while helping them find their forever home. Your new fuzzy friend 
-            could be here, waiting for you. Adopt a pet today!
-        </p id = "rcorners1">
-    </div>
+<div class="container p-5 ">
+        <div class ="row justify-content-center">
+            <div class= "col-4">
+                <img src= "{{ url_for('static', filename='images/puppy.jpg') }}" class="image" >
+            </div>
+            
+        
+            <div class='col-8'>
+                <div class= 'container'>
+                    <div class='row'>
+                    
+                        <h4 align = "center"> What Each Animal Means to Us </h4>
+                    </div>
+                        <div class='row'>
+                            <p id = "rcorners1"> 
+                                Here at Happy Paws, we have made it our mission to provide for each and every
+                                animal that enters our building by giving them everything that the need to have a wonderful life. All
+                                while helping them find their forever home. Your new fuzzy friend 
+                                could be here, waiting for you. Adopt a pet today!
+                            </p id = "rcorners1">
+                        </div>
+                    </div>
+                </div>  
+            </div>
+        </div>
 </div>
 
 <div class="container">
     <p id = "rcorners1"> 
-        Address: <br>
+        Address:  <br>
         Visiting Hours: <br>
         Monday - Saturday <br>
         8:00 AM to 5:00 PM <br>
     </p>
 
+</div>
+
+<div class="container p-5 ">
+    <div class ="row justify-content-center">
+        <div class='col-8'>
+            <div class= 'container'>
+                    <div class='row'>
+                        <p id = "rcorners1"> 
+                            If you have any questions about our services call us at <b>
+                            </b> 410-000-1011 
+                        </p id = "rcorners1">
+                    </div>
+            </div>  
+        </div>
+        <div class= "col-4">
+            <img src= "{{ url_for('static', filename='images/puppy.jpg') }}" class="image" >
+        </div>
+    </div>
 </div>
 
 {%endblock%}
