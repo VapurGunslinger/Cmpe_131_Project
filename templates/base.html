@@ -10,6 +10,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
 
+    <style>
+        .footer{
+            background-color:#5A5151;
+        }
+    </style>
 
     <title> Animal Shelter Website </title>
 
@@ -28,13 +33,13 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <ul class="nav nav-underline ms-auto py-0" >
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{url_for('home')}}">Home</a>
+                        <a class="nav-link " aria-current="page" href="{{url_for('home')}}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('adoption_steps')}}">Adoption Steps</a>
+                        <a class="nav-link " href="{{url_for('adoption_steps')}}">Adoption Steps</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('animals')}}">Adoptable Animals</a> 
+                        <a class="nav-link " href="{{url_for('animals')}}">Adoptable Animals</a> 
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{url_for('testimonial')}}">Testimonials</a>
@@ -47,40 +52,42 @@
     {%block body%} 
     {%endblock%}
 
+    <footer class="bg-dark text-white pt-5 pb-4">
+        <div class="container "> 
+            <div class="col-6 p-3">
+                <div class= "row justify-content-center">
+                    <p class="fs-4 text-center ">
+                        Contract us:
+                    </p>
+                </div>
+                <div class= "row justify-content-center">
+                    777 Somewhere St. San Jose
+                </div>
+                <div class= "row justify-content-center">
+                    Monday - Saturday
+                </div>
+                <div class= "row justify-content-center">
+                    8:00am - 5:00pm
+                </div>
+                <div class= "row justify-content-center">
+                    410-000-1011
+                </div>
+                
 
-    <!-- <nav class ="navbar">
-        <div class="navdiv">
-          
-            <div class="logo"><a href="#">Adoption center</a> </div> 
-                <ul>
-                    <li><a class="nav-link" href = "{{url_for('home')}}"> Home</a></li>
-                    <li><a class="nav-link" href = "{{url_for('adoption_steps')}}">  How do I adopt?  </a></li>
-                    <li><a class="nav-link" href = "{{url_for('animals')}}">  Meet the Pets </a></li>
-                    <li><a class="nav-link" href = "{{url_for('testimonial')}}">  Testimonials </a></li>
-                </ul>   
+            </div>
+            <div class="col-6">
+
             
-         </div>
-    </nav> -->
-
-<!-- <div class ='footer'>
-    <nav class ="navbar-footer">
-        <div class="navdiv-footer">
-          
-            <div class="logo"><a href="#">Adoption center</a> </div> 
-                <ul>
-                    <li><a class="nav-link" href = "{{url_for('home')}}"> Home </a></li>
-                    <li><a class="nav-link" href = "{{url_for('adoption_steps')}}">  How do I adopt?  </a></li>
-                    <li><a class="nav-link" href = "{{url_for('animals')}}">  Meet the Pets  </a></li>
-                    <li><a class="nav-link" href = "{{url_for('testimonial')}}">  Testimonials </a></li>
-
-               
-                    
-                </ul>   
             
-         </div>
-    </nav>
-</div> -->
+            </div>
+        </div>
+    
+    </footer>
+    
+    
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
+
+
 </html>
