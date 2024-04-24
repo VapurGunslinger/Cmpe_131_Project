@@ -21,8 +21,6 @@
     }
 
     img {
-        width: 200px;
-        height: 200px;
         border-radius: 50%;
         text-align: right;  
     }
@@ -45,12 +43,12 @@
 
 <div class="container p-5 ">
         <div class ="row justify-content-center">
-            <div class= "col-4">
-                <img src= "{{ url_for('static', filename='images/puppy.jpg') }}" class="image" >
+            <div class= "col-4 justify-content-center">
+                <img src= "{{ url_for('static', filename='images/puppy.jpg') }}" class="image" width ="200", height="200" >
             </div>
             
         
-            <div class='col-8'>
+            <div class='col-6'>
                 <div class= 'container'>
                     <div class='row'>
                     
@@ -72,7 +70,7 @@
 
 <div class="container">
     <p id = "rcorners1"> 
-        Address:  <br>
+        Address: 9119 somewhere St. San Jose <br>
         Visiting Hours: <br>
         Monday - Saturday <br>
         8:00 AM to 5:00 PM <br>
@@ -84,19 +82,25 @@
     <div class ="row justify-content-center">
         <div class='col-8'>
             <div class= 'container'>
+                <div class="d-flex align-item-center">
                     <div class='row'>
                         <p id = "rcorners1"> 
                             If you have any questions about our services call us at <b>
                             </b> 410-000-1011 
                         </p id = "rcorners1">
                     </div>
+                </div>
             </div>  
         </div>
         <div class= "col-4">
-            <img src= "{{ url_for('static', filename='images/puppy.jpg') }}" class="image" >
+            <img src= "{{ url_for('static', filename='images/dogPhone.jpg') }}" class="image" width = "250", height = "150" >
         </div>
     </div>
 </div>
+
+
+
+
 
 {%endblock%}
 
