@@ -67,6 +67,11 @@ class animalForm(FlaskForm):
 def home():
     return render_template('index.html')
 
+@app.route('/Animals/Schedule/<int:id>')
+def schedule(id):
+    animal = Animal.query.get_or_404(id)
+    return render_template('calendar.html', animal = animal)
+
 @app.route('/Adoption_steps')
 def adoption_steps():
     return render_template('Adoption_steps.html')
@@ -168,11 +173,6 @@ def update(id):
     else:
        return render_template("update.html", form=form, animal_update=animal_update)
 
-
-           
-           
-
-           
 
 
 @app.route('/Testimonial')

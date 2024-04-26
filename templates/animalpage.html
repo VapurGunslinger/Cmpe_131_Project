@@ -6,9 +6,55 @@
 
 
 {%block body%}
-<div class="container-fluid">
-    <div class="d-flex justify-content-center">
-        <h1> {{animal.name}}'s page </h1>
+<div class="container-fluid" style="padding-top: 20px">
+    <div class="container ">
+        <div class ="row">
+            <div class="col" style="padding-left: 130px; padding-bottom: 40px;">
+                <a href=" {{url_for('animals')}}" class="btn btn-primary" >Back</a>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col text-center">
+            {% if animal.image_path %}
+            <img src="{{ url_for('static', filename='animal_images/' + animal.image_path)}}" class="card-img-top" alt="animal's image"
+            style="max-width: 400px; max-height: 500px; object-fit: cover;">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/default_image.jpg') }}" class="card-img-top" alt="default image"
+            style="max-width: 400px; max-height: 500px; object-fit: cover;">
+            {% endif %}
+          </div>
+          <div class="col"> 
+            <h1 style="text-align: left"> {{animal.name}} </h1>
+            </br>
+            <h4> ID#: {{animal.id}} </h4>
+            <h4> {{animal.age}} Years Old, 
+                {% if animal.breed %}
+                {{ animal.breed }} 
+                {% else %}
+                Breed Unknown 
+                {% endif %}
+            </h4>
+            <h4> Gender: 
+                {% if animal.gender==0 %}
+                  Male
+                {% elif animal.gender==1 %}
+                  Female
+                {% elif animal.gender==2 %}
+                  Neutered Male
+                {% elif animal.gender==3 %}
+                  Spayed Female
+                {% endif %}
+            </h4>
+            <h5> Weight: {{animal.id}} </h5>
+            </br>
+            <p style="font-weight: bold; font-size: 20;"> About Me </p>
+            <p> {{ animal.description }} </p>
+            </br>
+            <a href="{{url_for('schedule', id=animal.id)}}" class="btn btn-success"" > Schedule an Appointment </a>
+            
+            
+          </div>
+        </div>
     </div>
 </div>
 {%endblock%}
