@@ -13,20 +13,32 @@
         <style>
             .form{
                 display: none;
-                position: fixed;
-                bottom: 0;
+                /* position: fixed; */
+                top: 100px;
                 right: 15px;
                 border: 3px solid #f1f1f1;
                 z-index: 9;
                 padding: 15px;
                 background-color: white;
-                width: 350px;
-                height: 550px
+                width: auto;
+                height: auto;
             }
             .available-slot{
                 background-color: rgb(219, 202, 227);
                 cursor: pointer;
             }
+
+            #calendar {
+            max-width: 1100px;
+            margin: 40px auto;
+            }
+
+            html, body {
+            margin: 0;
+            padding: 0;
+            }
+
+
         </style>
     </head>
 {%endblock%}
@@ -34,41 +46,50 @@
 {%block body%}
 <body>
  
-    <div class="container ">
-        <div id="calendar"></div>
-            <div class="form" id="form">
-                <h3>Appointment Form</h3>
-                <p id="selectedSlot"></p>
-                <form id="appointmentForm" action = '/calendar' method = 'post'>
-                    <label for="First Name">First Name:</label>
-                    <input type="text" id="First Name" name="First Name" required><br><br>
-
-                    <label for="Last Name">Last Name:</label>
-                    <input type="text" id="Last Name" name="Last Name" required><br><br>
-
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required><br><br>
-
-                    <label for="phone">Phone:</label>
-                    <input type="text" id="phone" name="phone" required><br><br>
-
-                    <label> Please type your appointment date. For example 04/16/2024 </label><br><br>
-                    <label for="date"> Date:</label>
-                    <input type="text" id="date" name="date" required><br><br>
-                    
-                    <label> Please type your starting time. For example 0830 </label><br><br>
-                    <label for="time">Time:</label>
-                    <input type="text" id="time" name="time" required><br><br>
-
-                    <input type="submit" value="Submit">
-                    <button type="button" onclick="cancelForm()">Cancel</button>
-                </form>
+    <div class="container-xl">
+        <div class ="row">
+            <div class="col" style="padding-bottom: 40px;">
+                <a href=" {{url_for('animalpage', id=animal.id)}} " class="btn btn-primary" >Back</a>
             </div>
+        </div>
+        <div class="row">
+            <div class="col" >
+                <div id="calendar"></div>
+            </div>
+            <div class="col" >
+                <div class="row" style = "padding-top: 20px">
+                    <h3 style="text-align: left"> Book an Appointment with {{animal.name}} </h3>
+                </div>
+                <div class="row">
+                    <div class="form" id="form">
+                        <h3>Appointment Form</h3>
+                        <p id="selectedSlot"></p>
+                        <form id="appointmentForm" action = '/calendar' method = 'post'>
+                            <label for="First Name">First Name:</label>
+                            <input type="text" id="First Name" name="First Name" required><br><br>
+            
+                            <label for="Last Name">Last Name:</label>
+                            <input type="text" id="Last Name" name="Last Name" required><br><br>
+            
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required><br><br>
+            
+                            <label for="phone">Phone:</label>
+                            <input type="text" id="phone" name="phone" required><br><br>
+    
+                            <input type="submit" value="Submit">
+                            <button type="button" onclick="cancelForm()">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
  
     <!-- FullCalendar from JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
     <script>
+        
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -80,8 +101,14 @@
                 events:[
                     {
                         title: 'Avaiable',
-                        start: '2024-04-14T08:30:00',
-                        end: '2024-04-14T09:30:00',
+                        start: '2024-04-14T08:00:00',
+                        end: '2024-04-14T09:00:00',
+                        className:'available-slot'
+                    },
+                    {
+                        title: 'Avaiable',
+                        start: '2024-04-14T09:00:00',
+                        end: '2024-04-14T10:00:00',
                         className:'available-slot'
                     },
                     {
@@ -92,8 +119,14 @@
                     },
                     {
                         title: 'Avaiable',
-                        start: '2024-04-14T11:30:00',
-                        end: '2024-04-14T12:30:00',
+                        start: '2024-04-14T11:00:00',
+                        end: '2024-04-14T12:00:00',
+                        className:'available-slot'
+                    },
+                    {
+                        title: 'Avaiable',
+                        start: '2024-04-14T12:00:00',
+                        end: '2024-04-14T13:00:00',
                         className:'available-slot'
                     },
                     {
@@ -104,26 +137,36 @@
                     },
                     {
                         title: 'Avaiable',
-                        start: '2024-04-14T14:30:00',
-                        end: '2024-04-14T15:30:00',
+                        start: '2024-04-14T14:00:00',
+                        end: '2024-04-14T15:00:00',
                         className:'available-slot'
                     }
 
+                    
+
+
                 ],
+
                 eventClick: function (info) {
                     // When a time slot is clicked, display the form popup and show the selected time slot
-                    document.getElementById("form").style.display = "block";
+                    document.getElementById("form").style.display = "inline";
 
                     var startTime = new Date(info.event.start).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
                     var endTime = new Date(info.event.end).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
                     var selectedSlot = startTime+ ' - ' + endTime;
                     document.getElementById("selectedSlot").innerHTML = "Appointment: " + selectedSlot;
                 },
-                slotMinTime: '08:30:00',
-                slotMaxTime: '16:30:00'
+                slotMinTime: '08:00:00',
+                slotMaxTime: '16:00:00',
+                // eventMinHeight: '5',
+                eventMaxHeight: '5',
+                expandRows: true,
+                allDaySlot: false
             });
             calendar.render(); 
+            calendar.updateSize();
         });
+        
         function submitForm(){
             let index = calendar.getEventSources()[0].rawEvents.indexOf(selectedEvent);
             calendar.getEventSources()[0].remove(index);
