@@ -39,11 +39,13 @@ class Animal(db.Model):
 class Appointment(db.Model):
     __tablename__ = 'appointments'
     appt_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100),nullable=False)
-    phoneNumber = db.Column(db.String(10), nullable=False)
+    First_Name = db.Column(db.String(100),nullable=False)
+    Last_Name = db.Column(db.String(100),nullable=False)
+    Email_Address = db.Column(db.String(100),nullable=False)
+    Phone_Number = db.Column(db.String(10), nullable=False)
     animal_id = db.Column(db.Integer, db.ForeignKey('animals.id'))
-    date = db.Column(db.DateTime)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    Appoint_Date = db.Column(db.DateTime)
+    Appoint_Time = db.Column(db.DateTime)
     
     def __repr__(self):
         return '<Appointment %r>' % self.name 
@@ -71,6 +73,27 @@ def home():
 def schedule(id):
     animal = Animal.query.get_or_404(id)
     return render_template('calendar.html', animal = animal)
+
+@app.route('/Animals/Schedule/Save', methods = ['POST'])
+def schedule_save():
+    form = request.form
+
+    appoint_date_str = form['Appoint_Date']
+    appoint_time_str = form['Appoint_Time']
+    appoint_datetime = datetime.strptime(appoint_date_str + ' ' + appoint_time_str, '%Y-%m-%d %H:%M')
+
+    appointement = Appointment(
+        First_Name = form['First_Name'],
+        Last_Name = form['Last_Name'],
+        Email_Address = form['Email_Address'],
+        Phone_Number = form['Phone_Number'],
+        # Appoint_Date = form['Appoint_Date'],
+        # Appoint_Time = form['Appoint_Time'],
+        Appoint_Date=appoint_datetime,
+    )
+    db.session.add(appointement)
+    db.session.commit()
+    return "Successfully submitted"
 
 @app.route('/Adoption_steps')
 def adoption_steps():
