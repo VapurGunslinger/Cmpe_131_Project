@@ -7,6 +7,7 @@
 
     .nav-link:hover{
         background-color:#AD6161 !important ;
+        border-radius: 50px
         /* color: #AD6161 !important; */
     
     }
@@ -27,7 +28,7 @@
 
 
 {%block body%}
-<div class="container">
+<div class="container p-4">
         <h1> Testimonials</h1>
         <img src= "{{ url_for('static', filename='images/p1.png') }}", class = "rounded-img",alt ="Sorry, the image could not be loaded or does not exist", width = "220", height = "210">
         <div class = "row justify-content-center">

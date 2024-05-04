@@ -14,6 +14,23 @@
         .footer{
             background-color:#5A5151;
         }
+        .masthead{
+            background-size: cover;
+            min-height: 60vh;
+            position: relative;
+            color: white;
+            text-shadow: 2px 2px 2px rgba(0,0,0,.2);
+        }
+        .color-overlay{
+            background-color: rgba(0,0,0,.0);
+        }
+    
+        #image{
+            background-image: url('../static/images/san_jose.jpg');
+            background-color: green;
+        }
+
+
     </style>
 
     <title> Animal Shelter Website </title>
@@ -24,9 +41,9 @@
 
 </head>
 <body>
-    <nav class ="navbar nav justify-content-center py-4 mb-4 sticky-top navbar-expand-lg navbar-dark text-light" >
+    <nav class ="navbar nav justify-content-center py-4 sticky-top navbar-expand-lg navbar-dark text-light" >
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"> <!-- <img src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24">--> Happy Paws </a>
+            <a class="navbar-brand" href="#"> <img src="{{ url_for('static', filename='images/Website_logo.svg') }}" alt="" width="50" height="50"> Happy Paws </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -48,12 +65,21 @@
             <!-- </div> -->
         </div>
     </nav>
+    <div class="container" id="back">
+        
+    </div>
 
     {%block body%} 
     {%endblock%}
+    <div class=" masthead" id="image" style="background-image: url('../static/images/san_jose.jpg')" >
+        <div class="color-overlay d-flex justify-content-center align-items-center">
+          
+        </div>
+    
+    </div>
 
     <footer class="footer text-white">
-        <div class="container "> 
+        <div class="container-fluid"> 
             <div class="col-6 p-3">
                 <div class= "row justify-content-center">
                     <p class="fs-4 text-center ">

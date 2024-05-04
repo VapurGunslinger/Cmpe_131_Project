@@ -3,60 +3,142 @@
     <style>
         .nav-link:hover{
             background-color:#8CB898 !important ;
+            border-radius: 50px
         }
 
         #rcorners1 {
-            border-radius: 100px;
+           
             background: #8CB898 !important;
-            padding: 25px; 
-            margin: auto;
-            width: auto;
-            height: auto;  
-            text-align: center;
+            
+
+        }
+        img {
+            border-radius: 50%;
+            text-align: right;  
         }
        
 
     </style>
-    {%endblock%}
+{%endblock%}
 {%block body%}
-<div class="container p-4 justify-content-center">
+<div class="container py-4 justify-content-center">
     <div class= "row justify-content-center">
-        <p class="fs-2 text-center ">How to bring a potential pet home</p>
+        <h1> How to bring a new Pet home </h1>
     </div>
 </div>
 
-<div class="container p-4">
-    <div class="row">
-        <div class= "col">
-            <p id="rcorners1"> Step 1: Schedule an appointment with one of them. This is done through our pets page. Just select one and schedule a time to get to know them.</p>
+
+<div class="container p-2 justify-content-center">
+    <div class="row align-items-center">
+        <div class="col-4">
+            <img src= "{{ url_for('static', filename='images/dog_couch.jpg') }}" class=" border border-1 border-dark" width="400" height="200" >
         </div>
 
-        <div class="col">
-            <p> image</p>
+        <div class="col-8">
+            <div class="row">
+                <p  class="fs-5 text-center"> Step 1: Schedule an appointment with one of them. This is done through our pets page. Just select one and schedule a time to get to know them.</p>
+            </div>
+            <div class="row">
+                <p  class="fs-5 text-center">Step 2: Fill out an adoption application. Inorder to see if you two are a match</p>
+            </div>
+            
+            <div class="row">
+                <p class="fs-5 text-center"> Step 3: Take them home and get to know the newest member of your house hold</p>
+            </div>
+
         </div>
     </div>
 </div>
 
 
-<div class="container p-4">
-    <div class="row">
-        <p id="rcorners1">Step 2: Fill out an application. This is so that we can see if you are an adequate fit for them.</p>
+<div class="container justify-content-center p-4">
+    <div class= "row justify-content-center">
+        <div class="col-10 align-self-start">
+            <p class="fs-2 ">Dog pricing</p>
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-6 ">
+            <div class="row align-items-center rounded-start-2 border border-1 border-black">
+                <p class="fs-5"> Puppies under 6 months</p>
+            </div>
+            <div class="row align-items-center rounded-start-2 border border-1 border-black">
+                <p class="fs-5"> Dogs under 6 years</p>
+            </div>
+
+            <div class="row align-items-center rounded-start-2 border border-1 border-black">
+                <p class="fs-5">  Dogs over 6 years </p>
+            </div>
+
+        </div>
+
+        <div class= "col-2 ">
+            <div class ="row rounded-end-2 border border-1 border-black">
+                <p class="fs-5"> $135 </p>
+            </div>
+
+            <div class ="row rounded-end-2 border border-1 border-black">
+                <p class="fs-5"> Fee wavied </p>
+            </div>
+
+            <div class ="row rounded-end-2 border border-1 border-black">
+                <p class="fs-5"> Fee wavied </p>
+            </div>
+
+        </div>
+
+        <div class="col-4 ">
+            <div class="row">
+                <img src= "{{ url_for('static', filename='images/dog_group.jpg') }}" class="image border border-1 border-dark" >
+            </div>
+
+        </div>
     </div>
 </div>
 
-<div class="container p-4 m-2">
-    <div class="row justify-content-center">
-        <p id="rcorners1">Step 3: Take them home. Once everything goes through, you will be able to take them home and have them become part of your family.</p>
+<div class="container justify-content-center p-4">
+    <div class= "row justify-content-center">
+        <p class="fs-2 text-center">Cat pricing</p>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-4">
+            <div class="row">
+                <img src= "{{ url_for('static', filename='images/cat_group.jpg') }}" class="image border border-1 border-dark" >
+            </div>
+
+        </div>
+        <div class="col-6">
+            <div class="row rounded-start-2 border border-1 border-black">
+                <p class="fs-5"> Kittens under 6 months</p>
+            </div>
+            <div class="row rounded-start-2 border border-1 border-black">
+                <p class="fs-5"> Cats under 6 years</p>
+            </div>
+
+            <div class="row rounded-start-2 border border-1 border-black">
+                <p class="fs-5"> Cats over 6 years </p>
+            </div>
+
+        </div>
+
+        <div class= "col-2">
+            <div class ="row rounded-end-2 border border-1 border-black">
+                <p class="fs-5"> $135 </p>
+            </div>
+
+            <div class ="row rounded-end-2 border border-1 border-black">
+                <p class="fs-5"> Fee wavied </p>
+            </div>
+
+            <div class ="row rounded-end-2 border border-1 border-black">
+                <p class="fs-5">  Fee wavied </p>
+            </div>
+
+        </div>
+
+       
     </div>
 </div>
-
-<div class="container p-4 m-2">
-    <div class="row">
-        <p id="rcorners1">Note: Adoption fees. <br> Puppies: $135 <br> (under 6 months)<br> Kittens: $100 <br> (under 4 months) </p>
-    </div>
-</div>
-
-
 
 {%endblock%}
 
