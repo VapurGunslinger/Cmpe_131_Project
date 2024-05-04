@@ -7,6 +7,7 @@
 
     .nav-link:hover{
         background-color:#CBC7DE !important ;
+        border-radius: 50px
         /* color: #CBC7DE !important; */
     }
 
@@ -20,11 +21,7 @@
         text-align: center;
     }
 
-    img {
-        border-radius: 50%;
-        text-align: right;  
-    }
-
+   
     image {
         width: auto;
         height: auto;  
@@ -32,7 +29,22 @@
         padding: 15px;  
         border: 3px solid white;  
     }
+    #back{
+        color:#CBC7DE;
+    }
 
+    .masthead{
+        background-size: cover;
+        min-height: 70vh;
+        position: relative;
+        color: white;
+        text-shadow: 2px 2px 2px rgba(0,0,0,.2);
+    }
+
+    #image{
+        
+        background-color: green;
+    }
 </style>
 
 
@@ -41,10 +53,18 @@
 
 {%block body%}
 
+<div class=" masthead" id="image" style="background-image: url('../static/images/dogs_lady.jpg');" >
+    <div class="color-overlay d-flex justify-content-center align-items-center">
+    
+    </div>
+</div>
+
+
+
 <div class="container p-5" >
-        <div class ="row justify-content-center">
+        <div class ="row justify-content-center align-items-center">
             <div class= "col-4 justify-content-center">
-                <img src= "{{ url_for('static', filename='images/puppy.jpg') }}" class="image" width ="200", height="200" >
+                <img src= "{{ url_for('static', filename='images/puppy.jpg') }}" class="rounded-circle" width ="200", height="200" >
             </div>
             
         
@@ -54,13 +74,13 @@
                     
                         <h4 align = "center"> What Each Animal Means to Us </h4>
                     </div>
-                        <div class='row'>
-                            <p id = "rcorners1"> 
+                        <div class='row rounded-4' style="background-color: #CBC7DE">
+                            <p class="fs-5"> 
                                 Here at Happy Paws, we have made it our mission to provide for each and every
                                 animal that enters our building by giving them everything that the need to have a wonderful life. All
                                 while helping them find their forever home. Your new fuzzy friend 
                                 could be here, waiting for you. Adopt a pet today!
-                            </p id = "rcorners1">
+                            </p >
                         </div>
                     </div>
                 </div>  
@@ -68,35 +88,49 @@
         </div>
 </div>
 
-<div class="container">
-    <p id = "rcorners1"> 
-        Address: 9119 somewhere St. San Jose <br>
-        Visiting Hours: <br>
-        Monday - Saturday <br>
-        8:00 AM to 5:00 PM <br>
-    </p>
 
-</div>
+<div class="container justify-content-center p-4" >
+    <div class="row justify-content-center align-items-center">
+        <div class="col-1">
+        </div>
+        <div class="col-4 rounded-4 align-items-center " style="background-color: #CBC7DE">
+            <div class="row">
+                <p class="fs-3"> Address: </p>
+                <p class="fs-5"> Find us at 9119 somewhere <br> St. San Jose, Ca</p>
+            </div>
+            <div class="row">
+                <p class="fs-3"> Visiting Hours:  </p>
+                <p class="fs-5"> Monday - Saturday from  </p>
+                <p class="fs-5"> 8:00am - 5:00pm </p>
+            </div>
 
-<div class="container p-5 ">
-    <div class ="row justify-content-center">
-        <div class='col-8'>
-            <div class= 'container'>
-                <div class="d-flex align-item-center">
-                    <div class='row'>
-                        <p id = "rcorners1"> 
-                            If you have any questions about our services call us at <b>
-                            </b> 410-000-1011 
-                        </p id = "rcorners1">
-                    </div>
-                </div>
-            </div>  
+            <div class="row">
+                <p class="fs-3">  Adoption Hours: </p>
+                <p class="fs-5"> Monday - Saturday from </p>
+                <p class="fs-5"> 8:00am - 3:00pm </p>
+            </div>
+
+
+            <div class="row justify-content-center m-1" >
+                
+                <a href="https://www.instagram.com/sjsu/"> <img src="{{ url_for('static', filename='images/gram.png') }}" alt="" width="50px" height="50px">  </a>
+
+            </div>
+
+
+            
         </div>
-        <div class= "col-4">
-            <img src= "{{ url_for('static', filename='images/dogPhone.jpg') }}" class="image" width = "250", height = "150" >
+
+        <div class="col-6 text-center justify-content-center align-items-center">
+            <img src= "{{ url_for('static', filename='images/cat_enrich.png') }}" class="rounded-pill" width="400" height="300" >
         </div>
+
     </div>
-</div>
+
+
+</div> 
+
+
 
 
 
