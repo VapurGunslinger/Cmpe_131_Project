@@ -45,7 +45,7 @@
                   Spayed Female
                 {% endif %}
             </h4>
-            <h5> Weight: {{animal.id}} </h5>
+            <h5> Weight: {{'%0.2f'|format(animal.weight|float)}} </h5>
             </br>
             <p style="font-weight: bold; font-size: 20;"> About Me </p>
             <p> {{ animal.description }} </p>
