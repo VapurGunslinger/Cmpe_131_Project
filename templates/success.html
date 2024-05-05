@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+{%block head%}
+{%endblock%}
+
+
+{%block body%}
+</br>
+<div class="container">
+    <h1> Appointment Booked Successfully! </h1>
+    <h3> Save the details of your appointment: </h3> 
+    <p><strong>Name:</strong> {{ appointment.First_Name }} {{ appointment.Last_Name }}</p>
+    <p><strong>Email:</strong> {{ appointment.Email_Address }}</p>
+    <p><strong>Phone:</strong> {{ appointment.Phone_Number }}</p>
+    <p><strong>Animal:</strong> {{ animal.name }}</p>
+    <p><strong>Appointment Date and Time:</strong> {{ appointment.Appoint_DateTime }}</p>
+
+
+</div>
+
+
+{%endblock%}
