@@ -2,12 +2,20 @@
 
 
 {%block head%}
+
+    <style>
+        .nav-link:hover {
+        background-color: #657C99 !important;
+        /* color: #657C99 !important; */
+    
+        }
+    </style>
 {%endblock%}
 
 
 {%block body%}
 </br>
-<div class="container">
+<div class="container p-4">
     {% for message in get_flashed_messages() %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             {{ message }}
