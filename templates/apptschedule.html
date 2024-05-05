@@ -2,7 +2,7 @@
 
 
 {%block head%}
-    <head>
+   
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=0.5">
         <title>Pre-Appointment Calendar</title>
@@ -10,6 +10,13 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css">
         
         <style>
+        
+            .nav-link:hover {
+                background-color: #657C99 !important;
+                /* color: #657C99 !important; */
+
+            }
+ 
             .form{
                 display: none;
                 /* position: fixed; */
@@ -52,15 +59,17 @@
             padding: 0;
             }
 
+           
+
 
         </style>
-    </head>
+    
 {%endblock%}
 
 {%block body%}
 <body>
  
-    <div class="container-xl">
+    <div class="container-xl p-4">
         <div class ="row">
             <div class="col" style="padding-bottom: 40px;">
                 <a href=" {{url_for('animalpage', id=animal.id)}} " class="btn btn-primary" >Back</a>
@@ -76,19 +85,17 @@
                 <div id="calendar"></div>
             </div>
             <div class="col" style="padding-left: 40px; padding-top: 40px">
-                <!-- <div class="row" style = "padding-top: 20px">
-                    <h3 style="text-align: left"> Book an Appointment with {{animal.name}} </h3>
-                </div> -->
+                
                 <div class="row" >
                     <div class="form" id="form">
                         <h3 class="text-center">Appointment Form</h3>
                         <p id="selectedSlot"></p>
                         <form id="appointmentForm" action = '/Animals/Schedule/Save' method = 'post'>
-                             <!-- Form fields go here -->
+                            
                             <p id="selectedSlot"></p>
 
                             <label>Please select your appointment time:</label><br><br>
-                            <input type="hidden" id="animal_id" name="animal_id" value="{{ animal.id }}"">
+                            <input type="hidden" id="animal_id" name="animal_id" value="{{ animal.id }}">
                             <input type="hidden" id="Appoint_Date" name="Appoint_Date" required>
                             <input type="hidden" id="Appoint_Time_Slot_Hidden" name="Appoint_Time_Slot" required>
                             <div id="timeSlotButtons"></div></br>
@@ -317,10 +324,11 @@
         
     </script>
 </body>
+
 {%endblock%}
 
 
-// const dayCells = document.querySelectorAll('.fc-daygrid-day'); // Get all day cells
+// const dayCells = document.querySelectorAll('.fc-daygrid-day'){ // Get all day cells
     
                     // dayCells.forEach(cell => {
                     //     const date = new Date(cell.getAttribute('data-date')); // Get the date of the cell
@@ -361,7 +369,7 @@
                         
                     // });
 
-                },
+                //},
 
 // dayCellDidMount: function (cell) {
 //     console.log("didmount")
