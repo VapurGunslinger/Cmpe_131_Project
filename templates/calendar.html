@@ -30,23 +30,32 @@
         .card{
             display: none;
         }
+
+        .large-font {
+            font-size: 1.1em;
+        }
     </style>
 </head>
     <body>
         <div class="container" style="padding-top: 40px">
             <h3>Employee Calendar View</h3>
             <div class="row">
-                <!-- Calendar Column -->
                 <div class="col-md-8">
                     <div id="calendar"></div>
                 </div>
-    
-                <!-- Event Information Column -->
-                <div class="col-md-4">
+                <div class="col-md-4" style="padding-top: 200px">
                     <div class="card" id="EventInfo">
                         <div class="card-body">
-                            <h5 class="card-title">Appointment Details</h5>
-                            <p id="InfoDisplay">Click an event to see details.</p>
+                            <h4 class="card-title" style ="text-align: center; padding-top: 10px;">Appointment Details</h4>
+                            <p class="large-font" id="DateTime" style ="text-align: center; padding-top: 10px;"></p>
+                            <p class="large-font" id="Animal"></p>
+                            <p class="large-font" id="Name"></p>
+                            <p class="large-font" id="Email"></p>
+                            <p class="large-font" id="Phone"></p>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end" style ="padding-top: 10px;">
+                                <button class="btn btn-danger " id="CancelAppointment" >Cancel Appointment</button>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -59,12 +68,14 @@
                 document.addEventListener('DOMContentLoaded', function () {
                 let calendarEl = document.getElementById('calendar');
                 let calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth', // Change to display monthly view
+                    initialView: 'dayGridMonth', 
                     selectable: true,
                     showNonCurrentDates: false,
                     events: '/api/appointments',
+                    // height:'800px',
+                    contentHeight: '900px',
                     
-                    eventTimeFormat: { // Display event time in the format you prefer
+                    eventTimeFormat: { 
                         hour: 'numeric',
                         minute: '2-digit',
                         meridiem: false
@@ -72,44 +83,74 @@
 
                     eventClick: function(info) {
                         showEvent(info)
-
-                        // change the border color just for fun
-                        info.el.style.borderColor = 'red';
                     }
                 });
                 calendar.render(); 
                 
-
-
             });
 
-
-
             function showEvent(info) {
-                // Get event details
                 const event = info.event;
-                
-                // Get the EventInfo div and make it visible
+    
                 const eventInfoDiv = document.getElementById("EventInfo");
-                eventInfoDiv.style.display = "block"; // Change display to make it visible
-                
-                // Update the InfoDisplay paragraph with the event details
-                const infoDisplay = document.getElementById("InfoDisplay");
-                
-                // Display basic event information
-                let eventDetails = `Animal: ${event.title}\n`;
-                eventDetails += `Start Time: ${event.start.toISOString().slice(0, 16).replace('T', ' ')}\n`;
+                eventInfoDiv.style.display = "block"; 
 
-                // Display extended properties if they exist
-                if (event.extendedProps) {
-                    for (const [key, value] of Object.entries(event.extendedProps)) {
-                        eventDetails += `${key}: ${value}\n`;
-                    }
+                const dateTimeP = document.getElementById("DateTime");
+                const animalP = document.getElementById("Animal");
+                const nameP = document.getElementById("Name");
+                const emailP = document.getElementById("Email");
+                const phoneP = document.getElementById("Phone");
+
+                const formattedDate = event.start.toLocaleDateString('en-US', {
+                    month: 'long', 
+                    day: 'numeric', 
+                    year: 'numeric', 
+                });
+
+                const formattedTime = event.start.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true, 
+                });
+
+                dateTimeP.innerHTML = `<strong>${formattedDate}, ${formattedTime}</strong>`;
+                animalP.textContent = `Animal: ${event.title}`; 
+                nameP.textContent = `Booked By: ${event.extendedProps.BookedBy}` 
+                emailP.textContent = `Email: ${event.extendedProps.Email}`; 
+                phoneP.textContent = `Phone: ${event.extendedProps.Phone}`; 
+
+                let cancelbutton= document.getElementById("CancelAppointment")
+
+
+                if (!cancelbutton.ListenerExists) {
+                   cancelbutton.ListenerExists = true;
+                   cancelbutton.addEventListener("click", function() {
+                        cancelAppointment(event.extendedProps.ID, eventInfoDiv); 
+                    });
                 }
-
-                infoDisplay.textContent = eventDetails;
-
             }
+
+            function cancelAppointment(ID, eventInfoDiv) {
+            
+            if (confirm("Are you sure you want to cancel this appointment?")) {
+                fetch(`/api/appointments/${ID}`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Appointment for animalID " + ID + " successfully canceled.");
+                        eventInfoDiv.style.display = "none"; 
+                        window.location.reload(); 
+                    } else {
+                        alert("Error canceling appointment for ID " + ID + ".");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error canceling appointment:", error);
+                    alert("Error canceling appointment for ID " + ID + ".");
+                });
+            }
+        }
         </script>
 
     </body>
