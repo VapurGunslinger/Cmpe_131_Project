@@ -328,13 +328,15 @@
             const form = document.getElementById("appointmentForm");
 
             form.addEventListener("submit", function(event) {
-                // Prevent the form from submitting by default
                 event.preventDefault();
 
-                // Validate the form
                 if (validateForm()) {
-                    // If validation passes, submit the form
-                    form.submit();
+                    const confirmSubmission = confirm("Are you sure you want to submit the appointment?");
+                    if (confirmSubmission) {
+                        form.submit(); // Proceed with submission if the user confirms
+                    } else {
+                        alert("Form submission canceled."); // Display a message if canceled
+                    }
                 } else {
                     alert("Please select a time slot before submitting."); // Display error message
                 }
