@@ -1,0 +1,392 @@
+{% extends "base.html" %}
+
+
+{%block head%}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=0.5">
+        <title>Pre-Appointment Calendar</title>
+        <!-- FullCalendar from CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css">
+        
+        <style>
+            .form{
+                display: none;
+                /* position: fixed; */
+                top: 100px;
+                right: 15px;
+                border: 3px solid #f1f1f1;
+                z-index: 9;
+                padding: 30px;
+                background-color: white;
+                width: auto;
+                height: auto;
+            }
+            .available-slot{
+                background-color: rgb(219, 202, 227);
+                cursor: pointer;
+            }
+            .clickable-date{
+                background-color: white;
+                cursor: pointer;
+            }
+
+            .fc-other-month {
+                pointer-events: none;
+                cursor: default;
+            }
+
+            .weekend {
+                background-color: #e0e0e0; 
+                color: #a0a0a0; 
+                cursor: not-allowed; 
+            }
+
+            #calendar {
+            max-width: 1100px;
+            margin: 40px auto;
+            }
+
+            html, body {
+            margin: 0;
+            padding: 0;
+            }
+
+
+        </style>
+    </head>
+{%endblock%}
+
+{%block body%}
+<body>
+ 
+    <div class="container-xl">
+        <div class ="row">
+            <div class="col" style="padding-bottom: 40px;">
+                <a href=" {{url_for('animalpage', id=animal.id)}} " class="btn btn-primary" >Back</a>
+            </div>
+        </div>
+        <div class ="row">
+            <div class="row" style = "padding-top: 20px">
+                <h3 class="text-center"> Book an Appointment with {{animal.name}} </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" >
+                <div id="calendar"></div>
+            </div>
+            <div class="col" style="padding-left: 40px; padding-top: 40px">
+                <!-- <div class="row" style = "padding-top: 20px">
+                    <h3 style="text-align: left"> Book an Appointment with {{animal.name}} </h3>
+                </div> -->
+                <div class="row" >
+                    <div class="form" id="form">
+                        <h3 class="text-center">Appointment Form</h3>
+                        <p id="selectedSlot"></p>
+                        <form id="appointmentForm" action = '/Animals/Schedule/Save' method = 'post'>
+                             <!-- Form fields go here -->
+                            <p id="selectedSlot"></p>
+
+                            <label>Please select your appointment time:</label><br><br>
+                            <input type="hidden" id="animal_id" name="animal_id" value="{{ animal.id }}"">
+                            <input type="hidden" id="Appoint_Date" name="Appoint_Date" required>
+                            <input type="hidden" id="Appoint_Time_Slot_Hidden" name="Appoint_Time_Slot" required>
+                            <div id="timeSlotButtons"></div></br>
+                            
+                            <label for="First_Name">First Name:</label> </br>
+                            <input type="text" id="First_Name" name="First_Name" required><br><br>
+
+                            <label for="Last_Name">Last Name:</label> </br>
+                            <input type="text" id="Last_Name" name="Last_Name" required><br><br>
+
+                            <label for="Email_Address">Email:</label> </br>
+                            <input type="email" id="Email_Address" name="Email_Address" required><br><br>
+
+                            <label for="Phone_Number">Phone:</label> </br>
+                            <input type="text" id="Phone_Number" name="Phone_Number" required><br><br>
+
+                            <input type="submit" value="Submit">
+                            <button type="button" onclick="cancelForm()">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- FullCalendar from JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            let calendarEl = document.getElementById('calendar');
+            const today = new Date();
+            console.log("today: " + today)
+            const endMonth = new Date(today.getFullYear(), today.getMonth() + 2, 1); // The first day of the third month
+            console.log("endmonth: " + endMonth)
+
+            let calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth', // Change to display monthly view
+                selectable: true,
+                navLinks: false,
+                weekends: false,
+                showNoncurrentDates: false,
+
+                
+                events: [], 
+                
+                eventTimeFormat: { // Display event time in the format you prefer
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: false
+                },
+                
+                datesSet: function (info) {
+                    let currentStartDate = info.view.currentStart;
+                    let currentMonth = currentStartDate.getMonth();
+
+                    console.log("dateSet triggered: start date is " + currentStartDate)
+                    console.log("month is " + currentMonth)
+                    const prevButton = document.querySelector('.fc-prev-button'); 
+                    const nextButton = document.querySelector('.fc-next-button'); 
+                    const todayButton = document.querySelector('.fc-today-button'); 
+                    prevButton.disabled = true;
+
+                    // Add event listener for "previous" button
+                    prevButton.addEventListener('click', function () {
+                        console.log("Previous button clicked");
+                        let currentDate = info.view.currentStart;
+                        restrictDisplay(today, currentDate, prevButton, nextButton)
+                    });
+
+                    // Add event listener for "next" button
+                    nextButton.addEventListener('click', function () {
+                        console.log("Next button clicked");
+                        let currentDate = info.view.currentStart;
+                        restrictDisplay(today, currentDate, prevButton, nextButton)
+
+                    });
+
+                    todayButton.addEventListener('click', function () {
+                        console.log("Next button clicked");
+                        let currentDate = info.view.currentStart;
+                        restrictDisplay(today, currentDate, prevButton, nextButton)
+
+                    });
+                },
+
+                dateClick: function(info) {
+                    let date = info.date
+                    let clickedDate = new Date(date);
+
+                    // Ensure the clicked date is not in the past
+                    if (clickedDate >= today) {
+                        // Show the form with the selected date
+                        showForm(date.toISOString().split('T')[0]); // Display form with selected date
+                    }
+                },
+
+                dayCellDidMount: function (cell) {
+                    const today = new Date(); // Get today's date
+                    const isPast = cell.date < today; // Check if the date is in the past
+                    if (isPast) {
+                        cell.el.classList.add('weekend'); // Apply custom styling to past dates
+                        cell.el.style.pointerEvents = 'none'; // Disable interaction
+                    }
+                }
+                    
+            });
+            calendar.render(); 
+            console.log("Calendar Rendered");
+
+        });
+
+        function restrictDisplay(today, currentDate, prevButton, nextButton){
+            let todayMonth = today.getMonth();
+            let latestMonth = today.getMonth() + 2;
+            let currentMonth = currentDate.getMonth();
+
+            console.log("today's month: " + today);
+            console.log("current view's month: " + currentMonth);
+            if (today.getMonth() == currentDate.getMonth()) {
+                console.log("prev true");
+                prevButton.disabled = true;
+            } else {
+                console.log("prev false");
+                prevButton.disabled = false;
+            }
+
+            if (currentMonth == latestMonth) {
+                console.log("next true");
+                nextButton.disabled = true;
+            } else {
+                console.log("next false");
+                nextButton.disabled = false;
+            }
+
+
+        }
+
+
+        
+        function populateTimeSlots(date) {
+            // Fetch booked time slots for the selected date
+            console.log("populateTimeSlots called with date:", date);
+            const timeSlots = generateTimeSlots(); // Generate all possible time slots
+            const timeSlotButtons = document.getElementById("timeSlotButtons");
+            timeSlotButtons.innerHTML = ""; // Clear existing buttons
+            console.log("Function called");
+
+            fetch(`/api/appointments/${date}`)
+                .then(response => response.json())
+                .then(bookedSlots => {
+                    console.log("Booked slots:", bookedSlots);  // Log booked slots
+                    timeSlots.forEach(slot => {
+                        console.log("Adding time slot:", slot);  // Log each slot addition
+
+                        const button = document.createElement("button");
+                        button.type = "button";
+                        button.className = "btn btn-primary";
+                        button.textContent = slot;
+
+                        if (bookedSlots.includes(slot)) {
+                            button.className += " btn-secondary";  
+                            button.disabled = true;  
+                        } else {
+                            button.onclick = function() {
+                                console.log("Selected time slot:", slot);  // Log selected slot
+                                document.querySelectorAll("#timeSlotButtons button").forEach(b => {
+                                    b.classList.remove("btn-success");
+                                });
+                                button.classList.add("btn-success"); 
+
+                                const appointTimeSlotHidden = document.getElementById("Appoint_Time_Slot_Hidden");
+                                appointTimeSlotHidden.value = slot; 
+                            };
+                        }
+
+                        timeSlotButtons.appendChild(button);  // Add the button to the form
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching booked time slots:", error)
+                });
+        }
+
+        function showForm(selectedDate) {
+            console.log("Form selected: " + selectedDate)
+           
+            const form = document.getElementById("form")
+            form.style.display = "inline";
+            const dateObject = new Date(selectedDate);
+            dateObject.setDate(dateObject.getDate() + 1);
+            const formattedDate = dateObject.toLocaleString('en-US', { month: 'long', day: 'numeric' });
+
+            const selectedSlot = document.getElementById("selectedSlot");
+            selectedSlot.innerHTML = `Date Selected: <b>${formattedDate}</b>`;  
+            
+            const appointDateInput = document.getElementById("Appoint_Date");
+            appointDateInput.value = selectedDate;
+            timeSlotButtons.innerHTML = ""; // Clear existing buttons
+            populateTimeSlots(selectedDate);
+            
+        }
+
+
+
+        function generateTimeSlots() {
+            let timeSlots = [];
+            let startTime = 8; // 8 AM
+            let endTime = 15; // 3 PM
+            
+            for (let hour = startTime; hour <= endTime; hour++) {
+                let formattedHour = hour < 10 ? `0${hour}` : `${hour}`;
+                timeSlots.push(`${formattedHour}:00`);
+                // timeSlots.push(`${formattedHour}:00 - ${formattedHour}:59`);
+            }
+            return timeSlots;
+        }
+
+        function submitForm(){
+            document.getElementById("form").style.display = "none";
+            return false;
+        } 
+        // Function to cancel the form
+        function cancelForm() {
+            document.getElementById("form").style.display = "none";   
+        }
+        
+    </script>
+</body>
+{%endblock%}
+
+
+// const dayCells = document.querySelectorAll('.fc-daygrid-day'); // Get all day cells
+    
+                    // dayCells.forEach(cell => {
+                    //     const date = new Date(cell.getAttribute('data-date')); // Get the date of the cell
+                    //     const dayOfWeek = date.getDay(); // Get the day of the week
+
+                    //     const selectedMonth = date.getMonth()
+                    //     console.log("cell: " + date)
+                    //     console.log("month: " + selectedMonth)
+
+                        
+                    //         // Reset styling and event listeners
+                    //         cell.style.backgroundColor = ''; // Clear existing styles
+                    //         cell.style.pointerEvents = ''; // Reset pointer events
+                    //         cell.classList.remove('weekend', 'clickable-date', 'non-current-day', 'past-date');
+                            
+                    //         // Apply custom logic
+                    //         if (dayOfWeek === 5 || dayOfWeek === 6 || selectedMonth != currentMonth) { // Weekends
+                    //             cell.classList.add('weekend'); // Add a class for weekends
+                    //             console.log("weekend")
+                    //             cell.style.pointerEvents = 'none'; // Make weekends unclickable
+                    //         } else {
+                    //             cell.classList.add('clickable-date'); // Add a class for weekdays
+                    //             console.log("Listener assigned" + date)
+                    //             if (!cell.ListenerExists) {
+                    //                 cell.ListenerExists = true;
+                    //             cell.addEventListener('click', function () {
+                    //                 showForm(date.toISOString().split('T')[0]); // Display form with selected date
+                    //             });
+                    //         }
+                    //             }
+
+                    //         // Check if the date is in the past
+                    //         if (date < today.setHours(0, 0, 0, 0)) {
+                    //             cell.classList.add('weekend');
+                    //             cell.style.pointerEvents = 'none'; // Make past dates unclickable
+                    //         }
+
+                        
+                    // });
+
+                },
+
+// dayCellDidMount: function (cell) {
+//     console.log("didmount")
+//     const today = new Date(); // Get today's date
+//     const isPast = cell.date < today; // Check if the date is in the past
+//     const isNonCurrentDate = !cell.isOther; // Indicates if the date is part of the current month
+//     const dayOfWeek = cell.date.getDay();
+    
+//     if (isPast) {
+//         cell.el.classList.add('weekend'); // Apply custom styling to past dates
+//         cell.el.style.pointerEvents = 'none'; // Disable interaction
+//     }
+//     if (!isNonCurrentDate) {
+//         cell.el.classList.add('non-current-day'); // Style non-current days differently
+//         cell.el.style.pointerEvents = 'none'; // Make non-current days unclickable
+//     }
+
+//     if (dayOfWeek === 0 || dayOfWeek === 6) { // Sunday = 0, Saturday = 6
+//         cell.el.classList.add('weekend'); // Apply custom styling for weekends
+//         cell.el.style.pointerEvents = 'none'; // Make cell non-clickable
+//     } else {
+//         // For weekdays, allow clicking
+//         cell.el.classList.add('clickable-date');
+//         cell.el.addEventListener('click', function () {
+//             showForm(cell.date.toISOString().split('T')[0]); // Show form with selected date
+//         });
+//     }
+// },
