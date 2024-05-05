@@ -100,7 +100,8 @@ def schedule_save():
 def appointmentsuccess(id):
     appointment = Appointment.query.get_or_404(id)
     animal = Animal.query.get_or_404(appointment.animal_id)
-    return render_template('success.html', appointment=appointment, animal=animal)
+    formatted = format_appointment_datetime(appointment.Appoint_DateTime)
+    return render_template('success.html', appointment=appointment, animal=animal, formatted=formatted)
 
 
 @app.route('/Adoption_steps')
@@ -236,7 +237,8 @@ def get_appointments():
             "title": f"{animal.name}",
             "start": appt.Appoint_DateTime.isoformat(),  # ISO 8601 format
             "extendedProps": {
-                "Booked by": "{} {}".format(appt.First_Name, appt.Last_Name),
+                "ID": appt.appt_id,
+                "BookedBy": "{} {}".format(appt.First_Name, appt.Last_Name),
                 "Email": f"{appt.Email_Address}",
                 "Phone": f"{appt.Phone_Number}"
             },
@@ -246,6 +248,29 @@ def get_appointments():
         events.append(event)
     app.logger.info("Returned JSON: %s", events)
     return jsonify(events)  # Return the events as JSON
+
+
+#API ROUTES, FORMATTING METHODS 
+
+@app.route('/api/appointments/<int:id>', methods=['DELETE'])
+def delete_appointment(id):
+    # Get the appointment by ID
+    appointment = Appointment.query.get(id)
+
+    # Check if the appointment exists
+    if not appointment:
+        return jsonify({"error": "Appointment not found"}), 404  # Return 404 if not found
+
+    try:
+        # Delete the appointment
+        db.session.delete(appointment)
+        db.session.commit()  # Commit the changes
+        return jsonify({"message": "Appointment deleted successfully"}), 200  # Success
+    except Exception as e:
+        # Rollback and return an error message
+        db.session.rollback()
+        return jsonify({"error": "Could not delete appointment"}), 500  # Internal server error
+
 
 @app.route('/api/appointments/<date>')
 def get_appointments_date(date):
@@ -265,5 +290,11 @@ def get_appointments_date(date):
     app.logger.info("Returned JSON: %s", bookedtimes)
     return jsonify(bookedtimes)  # Return the list of booked time slots
  
+def format_appointment_datetime(datetime):
+    date_time_obj = datetime.fromisoformat(str(datetime))
+    formatted_date = date_time_obj.strftime("%B %d, %Y")  
+    formatted_time = date_time_obj.strftime("%I:%M %p")  
+    return f"{formatted_date}, {formatted_time}"
+
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
