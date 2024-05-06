@@ -6,16 +6,89 @@ from wtforms import *
 from wtforms.validators import DataRequired, Optional, NumberRange
 from flask_wtf.file import FileField
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 import uuid as uuid
 import os
 import logging
 from datetime import datetime
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shelter.db'
 app.config['SECRET_KEY'] = "shelterkey"
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+#Flask_Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
+
+#Create Login Page
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = Users.query.filter_by(username=form.username.data).first()
+        if user:
+            # Check the hash
+            if check_password_hash(user.password_hash, form.password.data):
+                login_user(user)
+                flash("Login Successfull!")
+                return redirect(url_for('dashboard'))
+            else:
+                flash("Wrong Password - Try Again!")
+        else:
+            flash("That User Doesn't Exist! Try Again. . .")
+
+    return render_template('login.html', form=form)
+
+#Create Logout Page
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    flash("You Have Been Logged Out!")
+    return redirect(url_for('login'))
+
+#Create Login Form
+class LoginForm(FlaskForm):
+    username = StringField("Username", validators = [DataRequired()])
+    password = PasswordField("Password", validators = [DataRequired()])
+    submit = SubmitField("Submit")
+
+#Create Dashboard Page
+@app.route('/Dashboard', methods=['GET', 'POST'])
+@login_required
+def dashboard():
+    return render_template('dashboard.html')
+
+ANIMAL_IMAGE_FOLDER = "static/animal_images/"
+app.config['UPLOAD_FOLDER'] = ANIMAL_IMAGE_FOLDER 
+
+#Create Admin Page
+
+
+
+
+class Users(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False, unique=True)
+    password_hash = db.Column(db.String(128), nullable=False)
+
+
+
+
+class UserForm(FlaskForm):
+    username = StringField("Username", validators=[DataRequired()])
+
+
+
+
 
 ANIMAL_IMAGE_FOLDER = "static/animal_images/"
 app.config['UPLOAD_FOLDER'] = ANIMAL_IMAGE_FOLDER 
@@ -50,8 +123,6 @@ class Appointment(db.Model):
     
     def __repr__(self):
         return '<Appointment %r>' % self.name 
-
-# app.register_blueprint(views, url_prefix=("/"))
 
 # Forms
 class animalForm(FlaskForm):
@@ -121,7 +192,8 @@ def animalpage(id):
     return render_template('Animalpage.html', animal = animal)
 
 # ADD, EDIT, DELETE ANIMALS
-@app.route('/Animals/Add_Animal', methods=['GET', 'POST'])
+@app.route('/Dashboard/Add_Animal', methods=['GET', 'POST'])
+@login_required
 def add_animal():
     name = None
     form = animalForm()
@@ -164,7 +236,7 @@ def add_animal():
         form = form,
         all_animals=all_animals)
 
-@app.route('/Animals/Add_Animal/Delete/<int:id>')
+@app.route('/Dashboard/Add_Animal/Delete/<int:id>')
 def delete(id):
     animal_delete = Animal.query.get_or_404(id)
     related_appointments = Appointment.query.filter_by(animal_id=id).all()
@@ -176,13 +248,13 @@ def delete(id):
         db.session.delete(animal_delete)
         db.session.commit()
         flash("Animal and associated appointments deleted successfully.")
-        return redirect("/Animals/Add_Animal")
+        return redirect("/Dashboard/Add_Animal")
     except:
         db.session.rollback()
         flash("Unable to delete the animal from the database.")
-        return redirect("/Animals/Add_Animal")
+        return redirect("/Dashboard/Add_Animal")
     
-@app.route('/Animals/Add_Animal/Update/<int:id>', methods=['GET','POST']) 
+@app.route('/Dashboard/Add_Animal/Update/<int:id>', methods=['GET','POST']) 
 def update(id):
     animal_update = Animal.query.get_or_404(id)
     form = animalForm(obj=animal_update)
@@ -218,7 +290,8 @@ def update(id):
 def testimonial():
     return render_template('Testimonials.html')
 
-@app.route('/Employee/Calendar')
+@app.route('/Dashboard/Calendar')
+@login_required
 def calendar():
     return render_template('calendar.html')
 
@@ -242,9 +315,7 @@ def get_appointments():
                 "Email": f"{appt.Email_Address}",
                 "Phone": f"{appt.Phone_Number}"
             },
-
         }
-
         events.append(event)
     app.logger.info("Returned JSON: %s", events)
     return jsonify(events)  # Return the events as JSON
@@ -295,6 +366,7 @@ def format_appointment_datetime(datetime):
     formatted_date = date_time_obj.strftime("%B %d, %Y")  
     formatted_time = date_time_obj.strftime("%I:%M %p")  
     return f"{formatted_date}, {formatted_time}"
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
