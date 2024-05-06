@@ -3,7 +3,7 @@
 {% block body %}
 
 
-<div class="container">
+<div class="container p-5 ">
     {% for message in get_flashed_messages() %}
 
     <div class="alert alert-warning
@@ -17,7 +17,7 @@
     {% endfor %}
     <h1 style="padding-top: 20px">Login</h1>
     <br><br/>
-    <div class=""shadow p-3 mb-5 bg-body rounded"  style="padding-bottom: 30px">
+    <div class="shadow p-3 mb-5 bg-body rounded"  style="padding-bottom: 30px">
         <form method="POST">
             {{form.hidden_tag()}}
     
@@ -37,6 +37,14 @@
         </form>
     
     </div>
+</div>
+
+<div class="container p-5 bottom-padding:3rem">
+
+</div>
+
+<div class="container p-5 bottom-padding:5rem">
+
 </div>
 
 
