@@ -64,6 +64,37 @@
                     </div>
                 </div>
             </div>
+            </br></br>
+            <div class="d-flex justify-content-left">
+                <h3> Table View: </h3>
+            </div>
+            <table class="table table-hover table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Appt ID</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Animal ID</th>
+                    <th scope="col">Booked by</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <th scope="row">{{appointment.appt_id}}</th>
+                        <td>{{appointment.Appoint_DateTime}}</td>
+                        <td>{{appointment.animal_id}}</td>
+                        <td>{{appointment.First_Name}} {{appointment.Last_Name}}</td>
+                        <td>{{appointment.Email_Address}}</td>
+                        <td>{{appointment.Phone_Number}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+
+
+
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
                 <!-- FullCalendar from JavaScript -->

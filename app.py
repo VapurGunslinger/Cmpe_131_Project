@@ -70,25 +70,13 @@ def dashboard():
 ANIMAL_IMAGE_FOLDER = "static/animal_images/"
 app.config['UPLOAD_FOLDER'] = ANIMAL_IMAGE_FOLDER 
 
-#Create Admin Page
-
-
-
-
 class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
 
-
-
-
 class UserForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
-
-
-
-
 
 ANIMAL_IMAGE_FOLDER = "static/animal_images/"
 app.config['UPLOAD_FOLDER'] = ANIMAL_IMAGE_FOLDER 
@@ -293,7 +281,8 @@ def testimonial():
 @app.route('/Dashboard/Calendar')
 @login_required
 def calendar():
-    return render_template('calendar.html')
+    appointments = Appointment.query.order_by(Appointment.appt_id)
+    return render_template('calendar.html', appointments=appointments)
 
 @app.route('/api/appointments')
 def get_appointments():
