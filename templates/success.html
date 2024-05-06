@@ -2,19 +2,55 @@
 
 
 {%block head%}
+<style>
+    .large-font {
+        font-size: 1.1em;
+    }
+
+    .large-font-2 {
+        font-size: 1.3em;
+    }
+</style>
+
 {%endblock%}
 
 
 {%block body%}
 </br>
 <div class="container">
-    <h1> Appointment Booked Successfully! </h1>
-    <h3> Save the details of your appointment: </h3> 
-    <p><strong>Name:</strong> {{ appointment.First_Name }} {{ appointment.Last_Name }}</p>
-    <p><strong>Email:</strong> {{ appointment.Email_Address }}</p>
-    <p><strong>Phone:</strong> {{ appointment.Phone_Number }}</p>
-    <p><strong>Animal:</strong> {{ animal.name }}</p>
-    <p><strong>Appointment Date and Time:</strong> {{ appointment.Appoint_DateTime }}</p>
+    <h1 style="padding-top: 20px"> Appointment Booked Successfully! </h1>
+    <h3 style="padding: 20px; text-align: center;"> Please take a screenshot of the information below to save the details of your appointment. </h3> </br>
+    <div class="row justify-content-center" style="padding-bottom: 150px;">
+        <div class="col-sm-4">
+            <h3> <u>Your Appointment:</u> </h3> </br>
+            <p class="large-font-2"><strong>Meeting with {{ animal.name }}</strong></p>
+            <p class="large-font-1"><strong>Date and Time:</strong> {{ formatted }}</p>
+            <p><strong>Name:</strong> {{ appointment.First_Name }} {{ appointment.Last_Name }}</p>
+            <p><strong>Email:</strong> {{ appointment.Email_Address }}</p>
+            <p style="padding-bottom: 10px;"><strong>Phone:</strong> {{ appointment.Phone_Number }}</p>
+            <p class="large-font"><strong>{{ animal.name }}</strong> is looking forward to meeting you soon! </p>
+            <p style="padding-top: 60px;">If you would like to cancel your appointment, please call the shelter at (410)-000-1011, and an employee will assist you. </p>
+        </div>
+        <div class="col-sm-4" >
+            {% if animal.image_path %}
+            <img src="{{ url_for('static', filename='animal_images/' + animal.image_path)}}" class="card-img-top" alt="animal's image"
+            style="max-width: 400px; max-height: 500px; object-fit: cover;">
+            {% else %}
+            <img src="{{ url_for('static', filename='images/default_image.jpg') }}" class="card-img-top" alt="default image"
+            style="max-width: 400px; max-height: 500px; object-fit: cover;">
+            {% endif %}
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- <div class = "mx-auto p-2" style="width: 600px;">
+        
+    </div> -->
+    
 
 
 </div>
