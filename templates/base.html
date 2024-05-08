@@ -11,12 +11,26 @@
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}">
 
     <style>
+        body{
+            display:flex;
+            flex-direction: column;
+            min-height:100vh
+        }
+
+        kay{
+            flex-grow:1;
+        }
+
         .nav-link:hover{
             
             border-radius: 50px
             /* color: #CBC7DE !important; */
         }
         .footer{
+            position: relative;
+            left: 0;
+            bottom: 0;
+            width: 100%;
             background-color:#5A5151;
             
         }
@@ -74,11 +88,11 @@
     <div class="container" id="back">
         
     </div>
-
+    <kay>
     {%block body%} 
     {%endblock%}
-   
-    
+    </kay>
+   <div class=""> 
     <footer class="footer text-white ">
         <div class="container-fluid "> 
             <div class="row">
@@ -112,7 +126,7 @@
         </div>
     
     </footer>
-    
+    </div>
     
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

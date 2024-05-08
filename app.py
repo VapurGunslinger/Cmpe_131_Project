@@ -243,6 +243,7 @@ def delete(id):
         return redirect("/Dashboard/Add_Animal")
     
 @app.route('/Dashboard/Add_Animal/Update/<int:id>', methods=['GET','POST']) 
+@login_required
 def update(id):
     animal_update = Animal.query.get_or_404(id)
     form = animalForm(obj=animal_update)
@@ -313,6 +314,7 @@ def get_appointments():
 #API ROUTES, FORMATTING METHODS 
 
 @app.route('/api/appointments/<int:id>', methods=['DELETE'])
+@login_required
 def delete_appointment(id):
     # Get the appointment by ID
     appointment = Appointment.query.get(id)
