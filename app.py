@@ -335,6 +335,7 @@ def delete_appointment(id):
 @app.route('/api/appointments/<date>')
 def get_appointments_date(date):
     print(date)
+    
     try:
         # Ensure the date is in the correct format
         date_obj = datetime.strptime(date, '%Y-%m-%d')  # Expected date format is 'YYYY-MM-DD'

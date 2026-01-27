@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    <title>Pre-Appointment Calendar</title>
+    <!-- FullCalendar from CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css">
+    
+    <style>
+        .form{
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 15px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+            padding: 15px;
+            background-color: white;
+            width: 350px;
+            height: 550px
+        }
+        .available-slot{
+            background-color: rgb(219, 202, 227);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+   
+    <div id="calendar"></div>
+
+    <div class="form" id="form">
+        <h3>Appointment Form</h3>
+        <p id="selectedSlot"></p>
+        <form id="appointmentForm" action="/calendar" method="post" onsubmit="return submitForm()">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required><br><br>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" required><br><br>
+
+            <label> Please select your appointment date and time:</label><br><br>
+            <label for="dateTime">Date & Time:</label>
+            <input type="datetime-local" id="dateTime" name="dateTime" required><br><br>
+
+            <input type="submit" value="Submit">
+            <button type="button" onclick="cancelForm()">Cancel</button>
+
+        </form>
+       
+    </div>
+ 
+    <!-- FullCalendar from JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek', 
+                slotDuration: '00:30:00',
+                slotLabelInterval: { hours: 1 }, 
+                selectable: true,
+                events: [], // Initialize with an empty array
+
+                eventClick: function (info) {
+                    // When a time slot is clicked, display the form popup and show the selected time slot
+                    document.getElementById("form").style.display = "block";
+
+                    var startTime = new Date(info.event.start).toLocaleString([], {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'});
+                    var endTime = new Date(info.event.end).toLocaleString([], {hour:'2-digit',minute:'2-digit'});
+                    var selectedSlot = startTime+ ' - ' + endTime;
+                    document.getElementById("selectedSlot").innerHTML = "Appointment: " + selectedSlot;
+                },
+                slotMinTime: '08:00:00',
+                slotMaxTime: '17:00:00'
+            });
+            calendar.render(); 
+
+            // Update events dynamically
+            setInterval(updateEvents, 600); // Update every minute
+
+            // Function to update events
+            function updateEvents() {
+                // Clear existing events
+                calendar.getEventSources().forEach(function(eventSource) {
+                    eventSource.remove();
+                });
+                // Generate new events (you can modify this part based on your logic)
+                var newEvents = generateEvents();
+                calendar.addEventSource(newEvents);
+            }
+
+            // Function to generate events (example)
+            function generateEvents() {
+                var events = [];
+                // Example: Generate events for the next 15 days
+                for (var i = 0; i < 30; i++) {
+                    var currentDate = new Date();
+                    currentDate.setDate(currentDate.getDate() + i);
+
+                    var dayOfWeek = currentDate.getDay();
+                    if(dayOfWeek !== 6 && dayOfWeek !== 5){
+                        var dateString = currentDate.toISOString().slice(0,10);
+                    // Generate time slots for each hour from 8:00 AM to 5:00 PM
+                            for (var hour = 9; hour < 16; hour+=2) {
+                                var startTime = dateString + 'T' + (hour < 10 ? '0' : '') + hour + ':00:00';
+                                var endTime = dateString + 'T' + (hour < 10 ? '0' : '') + hour + ':60:00';
+                                events.push({
+                                    title: 'Available',
+                                    start: startTime,
+                                    end: endTime,
+                                    className: 'available-slot'
+                            });   
+                       }   
+                    }
+                }
+                return events;
+            }
+        });
+
+        function submitForm(){
+            document.getElementById("form").style.display = "none";
+            return false;
+        } 
+
+        // Function to cancel the form
+        function cancelForm() {
+            document.getElementById("form").style.display = "none";   
+        }
+    </script>
+</body>
+</html>
